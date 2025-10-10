@@ -12,6 +12,7 @@ import com.example.proyectologin006d_final.ui.login.LoginScreen
 import com.example.proyectologin006d_final.ui.home.MuestraDatosScreen
 import com.example.proyectologin006d_final.ui.home.MuestraDatosScreen
 import com.example.proyectologin006d_final.ui.login.LoginScreen
+import com.example.proyectologin006d_final.view.DrawerMenu
 
 @Composable
 
@@ -24,7 +25,8 @@ fun AppNav() {
         } // fin composable
 
         composable(
-            route = "muestraDatos/{username}",
+            //route = "muestraDatos/{username}",
+            route = "DrawerMenu/{username}",
             arguments = listOf(
                 navArgument("username") {
                     type = NavType.StringType
@@ -35,9 +37,17 @@ fun AppNav() {
         { // inicio back
                 backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
-            MuestraDatosScreen(username =username,navController=navController)
+           // MuestraDatosScreen(username =username,navController=navController)
 
+            DrawerMenu(username =username,navController=navController)
         } // Termino back
+
+        // Rutas para la pantalla ProductoForm
+
+
+
+
+
 
     }// Fin Nav
 } // fun AppNav()

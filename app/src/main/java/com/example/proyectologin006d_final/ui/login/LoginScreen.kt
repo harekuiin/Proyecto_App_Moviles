@@ -194,7 +194,10 @@ fun LoginScreen(   navController: NavController,
 
                 Button(onClick = {/* accion futura*/
                     vm.submit { user ->
-                        navController.navigate("muestraDatos/$user")
+                       // navController.navigate("muestraDatos/$user")
+                        navController.navigate("DrawerMenu/$user")
+
+
                         { // inicio navigate
                             popUpTo("login"){inclusive = true} // no volver al login con Back
                             launchSingleTop = true
