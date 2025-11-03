@@ -10,9 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.proyectologin006d_final.ui.login.LoginScreen
-import com.example.proyectologin006d_final.ui.home.MuestraDatosScreen
-import com.example.proyectologin006d_final.ui.home.MuestraDatosScreen
-import com.example.proyectologin006d_final.ui.login.LoginScreen
+import com.example.proyectologin006d_final.ui.login.RegisterScreen
+import com.example.proyectologin006d_final.ui.catalog.CatalogScreen
+import com.example.proyectologin006d_final.ui.catalog.ProductDetailScreen
 import com.example.proyectologin006d_final.view.DrawerMenu
 import com.example.proyectologin006d_final.view.ProductoFormScreen
 
@@ -26,23 +26,36 @@ fun AppNav() {
             LoginScreen(navController = navController)
         } // fin composable
 
+        composable("register") {
+            RegisterScreen(navController = navController)
+        }
+
+        composable("home") {
+            CatalogScreen(navController = navController)
+        }
+
         composable(
-            //route = "muestraDatos/{username}",
+            route = "productDetail/{code}",
+            arguments = listOf(
+                navArgument("code") { type = NavType.StringType }
+            )
+        ) {
+            backStackEntry ->
+            val code = backStackEntry.arguments?.getString("code").orEmpty()
+            ProductDetailScreen(code)
+        }
+
+        // Pantallas anteriores (mantengo DrawerMenu y ProductoForm por compatibilidad)
+        composable(
             route = "DrawerMenu/{username}",
             arguments = listOf(
-                navArgument("username") {
-                    type = NavType.StringType
-                }// fin ListOf
-            )// fin ListOf
-        ) // fin composable
-
-        { // inicio back
-                backStackEntry ->
+                navArgument("username") { type = NavType.StringType }
+            )
+        ) {
+            backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
-           // MuestraDatosScreen(username =username,navController=navController)
-
-            DrawerMenu(username =username,navController=navController)
-        } // Termino back
+            DrawerMenu(username = username, navController = navController)
+        }
 
         // Rutas para la pantalla ProductoForm
 

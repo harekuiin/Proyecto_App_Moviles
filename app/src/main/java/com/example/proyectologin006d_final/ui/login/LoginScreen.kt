@@ -55,24 +55,15 @@ fun LoginScreen(   navController: NavController,
     var showPass by remember { mutableStateOf(false) }
 
 
-    // darkColorScheme  es una funcion de material3 que define un color oscuro
-    val ColorScheme = darkColorScheme(
-        primary= Color(0xFF98222E),
-        onPrimary = Color.White,
-        onSurface = Color(0xFF333333), //Gris
-    ) // fin dark
-
-
-    MaterialTheme(
-        colorScheme = ColorScheme
-    ){ // inicio Aplicar Material
+    // Usar el tema global de la app (colores/typo definidos en Theme.kt)
+    MaterialTheme{
 
 
 
         Scaffold (
             // Crea Estuctra basica de la pantalla Se define topBar, BottomBar
             topBar = {
-                TopAppBar(title = {Text("Mi Primer App",
+                TopAppBar(title = {Text("Pastelería 1000 Sabores",
                     color =MaterialTheme.colorScheme.onPrimary,
                 )})
 
@@ -90,7 +81,7 @@ fun LoginScreen(   navController: NavController,
                     // Evita que quede oculto
                     .fillMaxSize() // Hace que la columnna tome el todo el tamaño
                     .padding(16.dp)
-                    .background(Color(0xFFF0F0F0)), // gris Claro
+                    .background(MaterialTheme.colorScheme.background),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally  // Centra horizontalmente
                 //Define  que elementos dentro la columna estaran separados por 20.dp
@@ -132,7 +123,7 @@ fun LoginScreen(   navController: NavController,
                     horizontalArrangement = Arrangement.SpaceBetween
                 )// Fin Row
                 {// Aplica row
-                    Text("texto uno",
+                    Text("Usuario",
                         style =MaterialTheme.typography.bodyLarge.copy(
                             color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
                             fontWeight = FontWeight.Bold),
@@ -141,7 +132,7 @@ fun LoginScreen(   navController: NavController,
                     )// fin texto 1
 
 
-                    Text("texto dos",
+                    Text("Contraseña",
                         style =MaterialTheme.typography.bodyLarge.copy(
                             color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
                             fontWeight = FontWeight.Bold),
@@ -194,8 +185,7 @@ fun LoginScreen(   navController: NavController,
 
                 Button(onClick = {/* accion futura*/
                     vm.submit { user ->
-                       // navController.navigate("muestraDatos/$user")
-                        navController.navigate("DrawerMenu/$user")
+                        navController.navigate("home")
 // hasta aqui fue la clase anterior
 
                         { // inicio navigate
@@ -214,6 +204,11 @@ fun LoginScreen(   navController: NavController,
                     //   Text("Presioname")
                     Text(if (state.isLoading) "Validando..." else "Iniciar sesión")
                 } // fin texto Button
+
+                Spacer(modifier = Modifier.height(12.dp))
+                TextButton(onClick = { navController.navigate("register") }) {
+                    Text("¿No tienes cuenta? Crear cuenta")
+                }
 
 
             }// fin Contenido
