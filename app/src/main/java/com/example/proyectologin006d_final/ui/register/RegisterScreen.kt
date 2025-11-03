@@ -65,20 +65,7 @@ fun RegisterScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "¡Únete a nuestra familia!",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Chocolate,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = "Celebra 50 años de tradición",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFF5D4037)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = state.nombre,
