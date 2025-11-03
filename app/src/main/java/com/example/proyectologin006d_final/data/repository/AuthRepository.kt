@@ -95,7 +95,7 @@ class AuthRepository(
     private fun calcularDescuento50(fechaNacimiento: String): Boolean {
         if (fechaNacimiento.isBlank()) return false
         try {
-            // Formato esperado: YYYY-MM-DD o DD/MM/YYYY
+            // Formato esperado: YYYY-MM-DD (formato ISO) o DD/MM/YYYY
             val partes = if (fechaNacimiento.contains("/")) {
                 fechaNacimiento.split("/")
             } else {
@@ -104,10 +104,11 @@ class AuthRepository(
             
             if (partes.size < 3) return false
             
-            val anio = if (partes[0].length == 4) {
-                partes[0].toInt()
-            } else {
-                partes[2].toInt()
+            // Determinar si el formato es YYYY-MM-DD o DD/MM/YYYY
+            val anio = when {
+                partes[0].length == 4 -> partes[0].toInt() // YYYY-MM-DD
+                partes[2].length == 4 -> partes[2].toInt() // DD/MM/YYYY
+                else -> return false
             }
             
             val anioActual = Calendar.getInstance().get(Calendar.YEAR)
