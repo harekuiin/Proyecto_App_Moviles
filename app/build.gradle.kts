@@ -73,6 +73,9 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")          // Misma versión
     implementation("androidx.room:room-ktx:2.6.1")     // Misma versión
 
+    // Coil para cargar imágenes
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

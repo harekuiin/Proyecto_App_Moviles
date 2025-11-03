@@ -32,6 +32,10 @@ class RegisterViewModel(
         uiState = uiState.copy(confirmPassword = value, error = null)
     }
 
+    fun onMayorDeEdadChange(value: Boolean) {
+        uiState = uiState.copy(mayorDeEdad = value, error = null)
+    }
+
     fun submit(onSuccess: (String, Boolean) -> Unit) {
         // Validaciones
         if (uiState.nombre.isBlank()) {
@@ -56,6 +60,11 @@ class RegisterViewModel(
 
         if (uiState.password != uiState.confirmPassword) {
             uiState = uiState.copy(error = "Las contraseñas no coinciden")
+            return
+        }
+
+        if (!uiState.mayorDeEdad) {
+            uiState = uiState.copy(error = "Debes ser mayor de 18 años para registrarte")
             return
         }
 

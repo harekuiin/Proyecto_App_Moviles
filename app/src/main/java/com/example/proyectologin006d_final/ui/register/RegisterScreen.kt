@@ -112,6 +112,23 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(0.95f)
                 )
 
+                // Checkbox de confirmación de mayoría de edad
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = state.mayorDeEdad,
+                        onCheckedChange = vm::onMayorDeEdadChange
+                    )
+                    Text(
+                        text = "Confirmo que soy mayor de 18 años",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0xFF5D4037),
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+
                 if (state.error != null) {
                     Text(
                         text = state.error ?: "",

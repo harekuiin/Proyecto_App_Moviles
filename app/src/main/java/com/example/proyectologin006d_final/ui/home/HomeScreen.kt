@@ -11,9 +11,15 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,6 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.proyectologin006d_final.data.database.ProductoDatabase
+import com.example.proyectologin006d_final.data.repository.UsuarioRepository
 import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
 import com.example.proyectologin006d_final.viewmodel.ProductoViewModel
@@ -39,6 +50,20 @@ fun HomeScreen(
     )
 ) {
     val productos by vm.productos.collectAsState()
+    val context = LocalContext.current
+    var nombreUsuario by remember { mutableStateOf(username) } // Por defecto muestra el correo
+    
+    // Obtener el nombre del usuario desde la base de datos
+    LaunchedEffect(username) {
+        withContext(Dispatchers.IO) {
+            val database = ProductoDatabase.getDatabase(context)
+            val usuarioRepository = UsuarioRepository(database.usuarioDao())
+            val usuario = usuarioRepository.obtenerUsuarioPorCorreo(username)
+            if (usuario != null && usuario.nombre.isNotEmpty()) {
+                nombreUsuario = usuario.nombre
+            }
+        }
+    }
 
     MaterialTheme(
         colorScheme = lightColorScheme(
@@ -81,7 +106,7 @@ fun HomeScreen(
                     .background(CremaPastel)
             ) {
                 Text(
-                    text = "Bienvenido, $username",
+                    text = "Bienvenid@, $nombreUsuario",
                     style = MaterialTheme.typography.headlineMedium,
                     color = Chocolate,
                     fontWeight = FontWeight.Bold,
@@ -142,7 +167,7 @@ fun ProductoCard(
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            // Espacio para la foto (estructura preparada)
+            // Imagen principal del producto
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -151,18 +176,27 @@ fun ProductoCard(
                     .background(Color(0xFFE0E0E0)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "Foto",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF9E9E9E)
-                )
-                // Aquí se puede agregar la imagen cuando esté disponible
-                // Image(
-                //     painter = painterResource(id = obtenerRecursoFoto(producto.foto)),
-                //     contentDescription = producto.nombre,
-                //     contentScale = ContentScale.Crop,
-                //     modifier = Modifier.fillMaxSize()
-                // )
+                if (producto.imagen_principal.isNotEmpty()) {
+                    // Convertir ruta "/img/archivo.jpg" a "img/archivo.jpg" para assets
+                    val rutaImagen = producto.imagen_principal.removePrefix("/")
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data("file:///android_asset/$rutaImagen")
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = producto.nombre,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                        error = androidx.compose.ui.res.painterResource(android.R.drawable.ic_menu_gallery),
+                        placeholder = androidx.compose.ui.res.painterResource(android.R.drawable.ic_menu_gallery)
+                    )
+                } else {
+                    Text(
+                        text = "Sin imagen",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color(0xFF9E9E9E)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
