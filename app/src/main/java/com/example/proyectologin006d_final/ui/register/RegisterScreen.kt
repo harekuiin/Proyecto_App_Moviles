@@ -43,7 +43,7 @@ fun RegisterScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Pastelería 1000 Sabores") },
+                    title = { Text("Pastelería Mil Sabores") },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Chocolate,
                         titleContentColor = CremaPastel

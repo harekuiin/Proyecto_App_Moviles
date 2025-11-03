@@ -52,7 +52,7 @@ fun HomeScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Pastelería 1000 Sabores") },
+                    title = { Text("Pastelería Mil Sabores") },
                     actions = {
                         IconButton(onClick = {
                             navController.navigate("login") {

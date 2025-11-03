@@ -2,7 +2,7 @@ package com.example.proyectologin006d_final.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Colores de Pastelería 1000 Sabores
+// Colores de Pastelería Mil Sabores
 val CremaPastel = Color(0xFFFFF5E1) // Fondo principal
 val RosaSuave = Color(0xFFFFC0CB) // Acento rosa
 val Chocolate = Color(0xFF8B4513) // Acento chocolate

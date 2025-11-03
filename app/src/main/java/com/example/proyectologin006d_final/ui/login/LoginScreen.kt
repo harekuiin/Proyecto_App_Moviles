@@ -72,7 +72,7 @@ fun LoginScreen(   navController: NavController,
             // Crea Estuctra basica de la pantalla Se define topBar, BottomBar
             topBar = {
                 TopAppBar(
-                    title = {Text("Pastelería 1000 Sabores",
+                    title = {Text("Pastelería Mil Sabores",
                         color =MaterialTheme.colorScheme.onPrimary,
                     )},
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -100,7 +100,7 @@ fun LoginScreen(   navController: NavController,
                 //Define  que elementos dentro la columna estaran separados por 20.dp
             )// fin column
             {// inicio Contenido
-                Text(text="Pastelería 1000 Sabores",
+                Text(text="Pastelería Mil Sabores",
                     style= MaterialTheme.typography.headlineLarge,
                     color=MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold

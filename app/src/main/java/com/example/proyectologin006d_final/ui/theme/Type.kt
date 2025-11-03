@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Tipografía para Pastelería 1000 Sabores
+// Tipografía para Pastelería Mil Sabores
 // Lato para texto general (usando Default como aproximación)
 // Pacifico para encabezados (usando estilo cursivo con Default)
 val Typography = Typography(
