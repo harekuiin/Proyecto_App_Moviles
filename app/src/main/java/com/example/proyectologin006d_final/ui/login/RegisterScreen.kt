@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,6 +22,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavController) {
     val nombre = remember { mutableStateOf("") }
@@ -28,7 +31,14 @@ fun RegisterScreen(navController: NavController) {
     val codigo = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Crear cuenta") }) }) { inner ->
+    MaterialTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(title = { Text("Crear cuenta",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )})
+            }
+        ) { inner ->
         Column(
             modifier = Modifier
                 .padding(inner)
@@ -46,6 +56,7 @@ fun RegisterScreen(navController: NavController) {
             Button(onClick = { navController.popBackStack() }, modifier = Modifier.fillMaxWidth()) {
                 Text("Crear cuenta")
             }
+        }
         }
     }
 }

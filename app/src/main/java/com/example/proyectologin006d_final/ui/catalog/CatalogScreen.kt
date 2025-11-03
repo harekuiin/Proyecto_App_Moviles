@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,13 +31,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.proyectologin006d_final.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogScreen(navController: NavController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Pastelería 1000 Sabores") })
-        }
-    ) { innerPadding ->
+    MaterialTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(title = { Text("Pastelería 1000 Sabores",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )})
+            }
+        ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -90,6 +95,7 @@ fun CatalogScreen(navController: NavController) {
                     }
                 }
             }
+        }
         }
     }
 }
