@@ -9,7 +9,7 @@ import com.example.proyectologin006d_final.data.model.Producto
 
 @Database(
     entities = [Producto::class],
-    version=1,
+    version=2,
     exportSchema = false // Agregar para evitar el warning
 )
 abstract class ProductoDatabase: RoomDatabase(){
@@ -24,7 +24,9 @@ abstract class ProductoDatabase: RoomDatabase(){
                     context.applicationContext,
                     ProductoDatabase::class.java,
                     "producto_database"
-                ).build() // fin Room
+                )
+                .fallbackToDestructiveMigration() // Para desarrollo: permite recrear la BD si cambia el esquema
+                .build() // fin Room
                 INSTANCE=instance
                 instance
 

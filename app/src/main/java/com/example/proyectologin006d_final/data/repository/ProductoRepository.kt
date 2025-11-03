@@ -10,18 +10,19 @@ class ProductoRepository (private val productoDao: ProductoDao){
         productoDao.insertarProducto(producto)
     }
 
+    suspend fun insertarProductos(productos: List<Producto>){
+        productoDao.insertarProductos(productos)
+    }
+
     fun obtenerProductos(): Flow<List<Producto>> {
         return productoDao.obtenerProductos()
     }
 
+    suspend fun obtenerProductoPorCodigo(codigo: String): Producto? {
+        return productoDao.obtenerProductoPorCodigo(codigo)
+    }
 
-    // Flow: permite al DAO observar los datos de los productos
-    // en tiempo real, culquier cambio en BD se refleja automaticamente
-    // en UI
-
-
-
-    // el Repository es una capa intermedia BBDD(DAO) y la UI
-    // encapsulamos las operaciones
-
-}// fin class
+    fun obtenerProductosPorCategoria(categoria: String): Flow<List<Producto>> {
+        return productoDao.obtenerProductosPorCategoria(categoria)
+    }
+}

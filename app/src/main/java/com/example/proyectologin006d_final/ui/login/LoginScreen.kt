@@ -29,9 +29,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import com.example.proyectologin006d_final.R
-import androidx.compose.ui.res.painterResource
+import com.example.proyectologin006d_final.ui.theme.Chocolate
+import com.example.proyectologin006d_final.ui.theme.CremaPastel
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -55,17 +55,30 @@ fun LoginScreen(   navController: NavController,
     var showPass by remember { mutableStateOf(false) }
 
 
-    // Usar el tema global de la app (colores/typo definidos en Theme.kt)
-    MaterialTheme{
+    MaterialTheme(
+        colorScheme = lightColorScheme(
+            primary = Chocolate,
+            background = CremaPastel,
+            surface = CremaPastel,
+            onPrimary = CremaPastel,
+            onBackground = Color(0xFF5D4037),
+            onSurface = Color(0xFF5D4037)
+        )
+    ){ // inicio Aplicar Material
 
 
 
         Scaffold (
             // Crea Estuctra basica de la pantalla Se define topBar, BottomBar
             topBar = {
-                TopAppBar(title = {Text("Pastelería 1000 Sabores",
-                    color =MaterialTheme.colorScheme.onPrimary,
-                )})
+                TopAppBar(
+                    title = {Text("Pastelería 1000 Sabores",
+                        color =MaterialTheme.colorScheme.onPrimary,
+                    )},
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                )
 
                 // Crea un AppBar con un titulo
 
@@ -81,32 +94,30 @@ fun LoginScreen(   navController: NavController,
                     // Evita que quede oculto
                     .fillMaxSize() // Hace que la columnna tome el todo el tamaño
                     .padding(16.dp)
-                    .background(MaterialTheme.colorScheme.background),
+                    .background(CremaPastel),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally  // Centra horizontalmente
                 //Define  que elementos dentro la columna estaran separados por 20.dp
             )// fin column
             {// inicio Contenido
-                Text(text="Bienvenido !",
-                    style= MaterialTheme.typography.headlineMedium,
-                    color=MaterialTheme.colorScheme.primary
+                Text(text="Pastelería 1000 Sabores",
+                    style= MaterialTheme.typography.headlineLarge,
+                    color=MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
 
 
                 ) // Muestra un texto simple en la pantalla
+            
+            Text(text="¡Celebra 50 años de tradición!",
+                    style= MaterialTheme.typography.bodyMedium,
+                    color=MaterialTheme.colorScheme.onSurface
+                )
 
 
 
 
-                Image(  // insertar una imagen en la interfaz
-                    painter= painterResource(id = R.drawable.logoduoc),
-                    contentDescription = "Logo App",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
-                    contentScale = ContentScale.Fit
-                    // Ajusta la imagen para que encaje dentro del espacio
-
-                ) // Fin Image
+                // Logo de la pastelería (por ahora sin imagen, se puede agregar después)
+                Spacer(modifier = Modifier.height(20.dp))
 
 
 // agregar un espacio entre la imagen y el boton
@@ -116,32 +127,6 @@ fun LoginScreen(   navController: NavController,
 
 
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                )// Fin Row
-                {// Aplica row
-                    Text("Usuario",
-                        style =MaterialTheme.typography.bodyLarge.copy(
-                            color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
-                            fontWeight = FontWeight.Bold),
-                        modifier = Modifier
-                            .padding(end=8.dp)
-                    )// fin texto 1
-
-
-                    Text("Contraseña",
-                        style =MaterialTheme.typography.bodyLarge.copy(
-                            color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
-                            fontWeight = FontWeight.Bold),
-                        modifier = Modifier
-                            .padding(end=8.dp)
-                    )// fin texto 1
-
-
-                } // fin Aplica row
 
 
 
@@ -183,28 +168,24 @@ fun LoginScreen(   navController: NavController,
 
                 Spacer(modifier = Modifier.height(66.dp))
 
-                Button(onClick = {/* accion futura*/
+                Button(onClick = {
                     vm.submit { user ->
-                        navController.navigate("home") {
-                            popUpTo("login") { inclusive = true } // no volver al login con Back
+                        navController.navigate("home/$user") {
+                            popUpTo("login"){inclusive = true} // no volver al login con Back
                             launchSingleTop = true
                         }
-                    }//fin submit
-
-                }, //  fin onClick
-
+                    }
+                },
                     enabled=!state.isLoading,
                     modifier = Modifier.fillMaxWidth(0.6f)
-                ) // fin Button
-                { // texto Button
-
-                    //   Text("Presioname")
+                ) {
                     Text(if (state.isLoading) "Validando..." else "Iniciar sesión")
-                } // fin texto Button
+                }
 
-                Spacer(modifier = Modifier.height(12.dp))
-                TextButton(onClick = { navController.navigate("register") }) {
-                    Text("¿No tienes cuenta? Crear cuenta")
+                TextButton(
+                    onClick = { navController.navigate("register") }
+                ) {
+                    Text("¿No tienes cuenta? Regístrate")
                 }
 
 

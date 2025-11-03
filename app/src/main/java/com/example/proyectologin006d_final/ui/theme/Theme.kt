@@ -10,32 +10,31 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryLight,
-    secondary = SecondaryLight,
-    tertiary = TertiaryLight,
-    background = Color(0xFF1E1B18),
-    surface = Color(0xFF26221E),
-    onPrimary = OnPrimaryLight,
-    onSecondary = OnSecondaryLight,
-    onTertiary = OnTertiaryLight,
-    onBackground = Color(0xFFF1E8DE),
-    onSurface = Color(0xFFF1E8DE)
+    primary = Chocolate,
+    secondary = RosaSuave,
+    tertiary = MarronOscuro,
+    background = MarronOscuro,
+    surface = MarronOscuro,
+    onPrimary = CremaPastel,
+    onSecondary = MarronOscuro,
+    onTertiary = CremaPastel,
+    onBackground = CremaPastel,
+    onSurface = CremaPastel
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = PrimaryLight,
-    secondary = SecondaryLight,
-    tertiary = TertiaryLight,
-    background = BackgroundLight,
-    surface = SurfaceLight,
-    onPrimary = OnPrimaryLight,
-    onSecondary = OnSecondaryLight,
-    onTertiary = OnTertiaryLight,
-    onBackground = OnBackgroundLight,
-    onSurface = OnSurfaceLight,
+    primary = Chocolate,
+    secondary = RosaSuave,
+    tertiary = MarronOscuro,
+    background = CremaPastel,
+    surface = CremaPastel,
+    onPrimary = CremaPastel,
+    onSecondary = MarronOscuro,
+    onTertiary = MarronOscuro,
+    onBackground = MarronOscuro,
+    onSurface = MarronOscuro
 )
 
 @Composable

@@ -3,7 +3,10 @@ package com.example.proyectologin006d_final
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.proyectologin006d_final.navigation.AppNav
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import com.example.proyectologin006d_final.navigation.AppNav
 import com.example.proyectologin006d_final.ui.theme.ProyectoLogin006D_finalTheme
 
@@ -12,7 +15,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProyectoLogin006D_finalTheme {
-                AppNav()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNav()
+                }
             }
         }
     }
