@@ -25,14 +25,13 @@ import com.example.proyectologin006d_final.R
 fun ProductDetailScreen(code: String) {
     val product = ProductData.products.firstOrNull { it.code == code }
 
-    MaterialTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text(product?.name ?: "Detalle del producto",
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )})
-            }
-        ) { innerPadding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(product?.name ?: "Detalle del producto",
+                color = MaterialTheme.colorScheme.onPrimary,
+            )})
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -56,7 +55,6 @@ fun ProductDetailScreen(code: String) {
             Text(text = product?.priceClp ?: "", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(12.dp))
             Text(text = product?.description ?: "", style = MaterialTheme.typography.bodyLarge)
-        }
         }
     }
 }

@@ -34,14 +34,13 @@ import com.example.proyectologin006d_final.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogScreen(navController: NavController) {
-    MaterialTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text("Pastelería 1000 Sabores",
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )})
-            }
-        ) { innerPadding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Pastelería 1000 Sabores",
+                color = MaterialTheme.colorScheme.onPrimary,
+            )})
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -95,7 +94,6 @@ fun CatalogScreen(navController: NavController) {
                     }
                 }
             }
-        }
         }
     }
 }

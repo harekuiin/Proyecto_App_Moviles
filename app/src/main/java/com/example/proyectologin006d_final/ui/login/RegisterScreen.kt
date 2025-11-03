@@ -31,14 +31,13 @@ fun RegisterScreen(navController: NavController) {
     val codigo = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    MaterialTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text("Crear cuenta",
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )})
-            }
-        ) { inner ->
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Crear cuenta",
+                color = MaterialTheme.colorScheme.onPrimary,
+            )})
+        }
+    ) { inner ->
         Column(
             modifier = Modifier
                 .padding(inner)
@@ -56,7 +55,6 @@ fun RegisterScreen(navController: NavController) {
             Button(onClick = { navController.popBackStack() }, modifier = Modifier.fillMaxWidth()) {
                 Text("Crear cuenta")
             }
-        }
         }
     }
 }

@@ -185,13 +185,10 @@ fun LoginScreen(   navController: NavController,
 
                 Button(onClick = {/* accion futura*/
                     vm.submit { user ->
-                        navController.navigate("home")
-// hasta aqui fue la clase anterior
-
-                        { // inicio navigate
-                            popUpTo("login"){inclusive = true} // no volver al login con Back
+                        navController.navigate("home") {
+                            popUpTo("login") { inclusive = true } // no volver al login con Back
                             launchSingleTop = true
-                        }// fin navigate
+                        }
                     }//fin submit
 
                 }, //  fin onClick
