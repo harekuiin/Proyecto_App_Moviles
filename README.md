@@ -34,6 +34,35 @@ cd Proyecto_App_Moviles
 
 5. Ejecuta la aplicación en un dispositivo o emulador
 
+## ⚠️ Solución de Problemas
+
+### Error del Daemon de Kotlin
+
+Si encuentras el error "The daemon has terminated unexpectedly", sigue estos pasos:
+
+1. **En Android Studio:**
+   - Ve a `File` → `Invalidate Caches / Restart...`
+   - Selecciona `Invalidate and Restart`
+
+2. **Limpia los archivos de build:**
+   ```powershell
+   # En PowerShell (Windows)
+   Remove-Item -Recurse -Force .gradle, build, app\build -ErrorAction SilentlyContinue
+   ```
+
+3. **Detén todos los daemons de Gradle:**
+   ```powershell
+   .\gradlew --stop
+   ```
+
+4. **Vuelve a sincronizar el proyecto** en Android Studio
+
+### Si el problema persiste:
+
+- Verifica que tengas al menos **8GB de RAM** disponible
+- Asegúrate de tener **Java 11 o superior** instalado
+- Verifica que Android Studio esté actualizado a la última versión
+
 ## 📱 Estructura del Proyecto
 
 ```
