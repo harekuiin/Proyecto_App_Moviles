@@ -2,7 +2,6 @@ package com.example.proyectologin006d_final.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -82,14 +81,6 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
-                    value = state.run,
-                    onValueChange = vm::onRunChange,
-                    label = { Text("RUT (sin puntos, con guion)") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.95f)
-                )
-
-                OutlinedTextField(
                     value = state.nombre,
                     onValueChange = vm::onNombreChange,
                     label = { Text("Nombre completo") },
@@ -105,44 +96,6 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(0.95f),
                     placeholder = { Text("usuario@gmail.com o @duoc.cl") }
                 )
-
-                OutlinedTextField(
-                    value = state.fechaNacimiento,
-                    onValueChange = vm::onFechaNacimientoChange,
-                    label = { Text("Fecha de nacimiento") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    placeholder = { Text("YYYY-MM-DD") }
-                )
-
-                OutlinedTextField(
-                    value = state.telefono,
-                    onValueChange = vm::onTelefonoChange,
-                    label = { Text("Teléfono") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.95f)
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = state.pais,
-                        onValueChange = vm::onPaisChange,
-                        label = { Text("País") },
-                        singleLine = true,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    OutlinedTextField(
-                        value = state.comuna,
-                        onValueChange = vm::onComunaChange,
-                        label = { Text("Comuna") },
-                        singleLine = true,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
 
                 OutlinedTextField(
                     value = state.password,
@@ -170,15 +123,6 @@ fun RegisterScreen(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(0.95f)
-                )
-
-                OutlinedTextField(
-                    value = state.codigoPromocional,
-                    onValueChange = vm::onCodigoPromocionalChange,
-                    label = { Text("Código promocional (opcional)") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    placeholder = { Text("Ej: FELICES50") }
                 )
 
                 if (state.error != null) {

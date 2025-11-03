@@ -16,20 +16,12 @@ class RegisterViewModel(
     var uiState by mutableStateOf(RegisterUiState())
         private set
 
-    fun onRunChange(value: String) {
-        uiState = uiState.copy(run = value, error = null)
-    }
-
     fun onNombreChange(value: String) {
         uiState = uiState.copy(nombre = value, error = null)
     }
 
     fun onEmailChange(value: String) {
         uiState = uiState.copy(email = value, error = null)
-    }
-
-    fun onFechaNacimientoChange(value: String) {
-        uiState = uiState.copy(fechaNacimiento = value, error = null)
     }
 
     fun onPasswordChange(value: String) {
@@ -40,29 +32,8 @@ class RegisterViewModel(
         uiState = uiState.copy(confirmPassword = value, error = null)
     }
 
-    fun onTelefonoChange(value: String) {
-        uiState = uiState.copy(telefono = value, error = null)
-    }
-
-    fun onComunaChange(value: String) {
-        uiState = uiState.copy(comuna = value, error = null)
-    }
-
-    fun onPaisChange(value: String) {
-        uiState = uiState.copy(pais = value, error = null)
-    }
-
-    fun onCodigoPromocionalChange(value: String) {
-        uiState = uiState.copy(codigoPromocional = value, error = null)
-    }
-
     fun submit(onSuccess: (String, Boolean) -> Unit) {
         // Validaciones
-        if (uiState.run.isBlank()) {
-            uiState = uiState.copy(error = "El RUT es obligatorio")
-            return
-        }
-
         if (uiState.nombre.isBlank()) {
             uiState = uiState.copy(error = "El nombre es obligatorio")
             return
@@ -78,6 +49,11 @@ class RegisterViewModel(
             return
         }
 
+        if (uiState.password.length < 6) {
+            uiState = uiState.copy(error = "La contraseña debe tener al menos 6 caracteres")
+            return
+        }
+
         if (uiState.password != uiState.confirmPassword) {
             uiState = uiState.copy(error = "Las contraseñas no coinciden")
             return
@@ -85,16 +61,17 @@ class RegisterViewModel(
 
         uiState = uiState.copy(isLoading = true, error = null, successMessage = null)
 
+        // Crear usuario con valores por defecto para campos no requeridos
         val usuario = Usuario(
             correo = uiState.email.trim(),
-            run = uiState.run.trim(),
+            run = "", // No requerido
             nombre = uiState.nombre.trim(),
             password = uiState.password,
-            fecha = uiState.fechaNacimiento.trim(),
-            telefono = uiState.telefono.trim(),
-            comuna = uiState.comuna.trim(),
-            pais = uiState.pais.trim(),
-            codigoUsado = if (uiState.codigoPromocional.isBlank()) "" else uiState.codigoPromocional.trim()
+            fecha = "", // No requerido
+            telefono = "", // No requerido
+            comuna = "", // No requerido
+            pais = "Chile", // Valor por defecto
+            codigoUsado = "" // No requerido
         )
 
         viewModelScope.launch {
@@ -103,13 +80,9 @@ class RegisterViewModel(
 
             when (result) {
                 is com.example.proyectologin006d_final.data.repository.RegisterResult.Success -> {
-                    val mensajes = mutableListOf<String>()
-                    if (result.descuento50) mensajes.add("50% de descuento por ser mayor de 50 años")
-                    if (result.descuento10) mensajes.add("10% de descuento de por vida con código FELICES50")
-                    if (result.esEstudianteDuoc) mensajes.add("Tortas gratis en tu cumpleaños por ser estudiante Duoc")
-
-                    val mensaje = if (mensajes.isNotEmpty()) {
-                        "¡Registro exitoso! Beneficios: ${mensajes.joinToString(", ")}"
+                    // Mostrar mensaje de éxito
+                    val mensaje = if (result.esEstudianteDuoc) {
+                        "¡Registro exitoso! Beneficios: Tortas gratis en tu cumpleaños por ser estudiante Duoc"
                     } else {
                         "¡Registro exitoso!"
                     }
