@@ -18,8 +18,8 @@ class ProductoRepository (private val productoDao: ProductoDao){
         return productoDao.obtenerProductos()
     }
 
-    suspend fun obtenerProductoPorCodigo(codigo: String): Producto? {
-        return productoDao.obtenerProductoPorCodigo(codigo)
+    suspend fun obtenerProductoPorId(id: String): Producto? {
+        return productoDao.obtenerProductoPorId(id)
     }
 
     fun obtenerProductosPorCategoria(categoria: String): Flow<List<Producto>> {

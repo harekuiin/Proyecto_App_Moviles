@@ -35,21 +35,24 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyectologin006d_final.ui.login.LoginUiState
 import com.example.proyectologin006d_final.ui.login.LoginViewModel
+import com.example.proyectologin006d_final.viewmodel.AuthViewModelFactory
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 // Permite usar funciones Material 3 qe son experimentales
 @Composable  // Genera Interfz Garfica
 
-fun LoginScreen(   navController: NavController,
-                   vm: LoginViewModel = viewModel()
+fun LoginScreen(
+    navController: NavController,
+    vm: LoginViewModel = viewModel(
+        factory = AuthViewModelFactory(LocalContext.current.applicationContext as android.app.Application)
+    )
 ) {
     val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
@@ -131,12 +134,13 @@ fun LoginScreen(   navController: NavController,
 
 
                 OutlinedTextField(
-                    value = state.username,
-                    onValueChange = vm::onUsernameChange,
-                    label = { Text("Usuario") },
+                    value = state.correo,
+                    onValueChange = vm::onCorreoChange,
+                    label = { Text("Correo electrónico") },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.95f)
-                ) // fin user
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    placeholder = { Text("usuario@gmail.com o @duoc.cl") }
+                ) // fin correo
 
 
                 OutlinedTextField(
@@ -169,10 +173,17 @@ fun LoginScreen(   navController: NavController,
                 Spacer(modifier = Modifier.height(66.dp))
 
                 Button(onClick = {
-                    vm.submit { user ->
-                        navController.navigate("home/$user") {
-                            popUpTo("login"){inclusive = true} // no volver al login con Back
-                            launchSingleTop = true
+                    vm.submit { correo, isAdmin ->
+                        if (isAdmin) {
+                            navController.navigate("admin/$correo") {
+                                popUpTo("login") { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        } else {
+                            navController.navigate("home/$correo") {
+                                popUpTo("login") { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
                     }
                 },
@@ -197,15 +208,3 @@ fun LoginScreen(   navController: NavController,
     } // fin Aplicar Material
 }// Fin HomeScreen
 
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    // Crear un navController de manera ficticia para fines de la vista previa
-    val navController = rememberNavController()
-
-    // Puedes usar un ViewModel simulado aquí si no tienes acceso a uno real
-    val vm = LoginViewModel() // Suponiendo que LoginViewModel está correctamente configurado para la vista previa
-
-    LoginScreen(navController = navController, vm = vm)
-}

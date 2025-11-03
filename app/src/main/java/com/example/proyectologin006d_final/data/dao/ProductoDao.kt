@@ -18,8 +18,8 @@ interface ProductoDao{
     @Query("SELECT * FROM productos")
     fun obtenerProductos(): Flow<List<Producto>>
 
-    @Query("SELECT * FROM productos WHERE codigo = :codigo")
-    suspend fun obtenerProductoPorCodigo(codigo: String): Producto?
+    @Query("SELECT * FROM productos WHERE id = :id")
+    suspend fun obtenerProductoPorId(id: String): Producto?
 
     @Query("SELECT * FROM productos WHERE categoria = :categoria")
     fun obtenerProductosPorCategoria(categoria: String): Flow<List<Producto>>

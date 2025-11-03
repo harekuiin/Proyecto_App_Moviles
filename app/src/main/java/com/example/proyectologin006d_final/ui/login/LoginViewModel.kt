@@ -1,33 +1,43 @@
 package com.example.proyectologin006d_final.ui.login
 
-
 import androidx.lifecycle.ViewModel
-
+import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.proyectologin006d_final.data.repository.AuthRepository
+import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val repo: AuthRepository = AuthRepository()
+    private val repo: AuthRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf(LoginUiState())
         private set
 
-    fun onUsernameChange(value: String) {
-        uiState = uiState.copy(username = value, error = null)
+    fun onCorreoChange(value: String) {
+        uiState = uiState.copy(correo = value, error = null)
     }
 
     fun onPasswordChange(value: String) {
         uiState = uiState.copy(password = value, error = null)
     }
 
-    fun submit(onSuccess: (String) -> Unit) {
+    fun submit(onSuccess: (String, Boolean) -> Unit) {
         uiState = uiState.copy(isLoading = true, error = null)
-        val ok = repo.login(uiState.username.trim(), uiState.password)
-        uiState = uiState.copy(isLoading = false)
-        if (ok) onSuccess(uiState.username.trim())
-        else uiState = uiState.copy(error = "Credenciales inválidas")
+        
+        viewModelScope.launch {
+            val result = repo.login(uiState.correo.trim(), uiState.password)
+            uiState = uiState.copy(isLoading = false)
+            
+            when (result) {
+                is com.example.proyectologin006d_final.data.repository.LoginResult.Success -> {
+                    onSuccess(result.usuario.correo, result.usuario.isAdmin)
+                }
+                is com.example.proyectologin006d_final.data.repository.LoginResult.Error -> {
+                    uiState = uiState.copy(error = result.mensaje)
+                }
+            }
+        }
     }
 }

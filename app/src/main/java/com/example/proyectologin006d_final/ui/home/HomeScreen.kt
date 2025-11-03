@@ -109,7 +109,7 @@ fun HomeScreen(
                             ProductoCard(
                                 producto = producto,
                                 onClick = {
-                                    navController.navigate("detalle/${producto.codigo}")
+                                    navController.navigate("detalle/${producto.id}")
                                 }
                             )
                         }

@@ -2,6 +2,7 @@ package com.example.proyectologin006d_final.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,16 +16,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
 import com.example.proyectologin006d_final.ui.theme.Chocolate
+import com.example.proyectologin006d_final.viewmodel.AuthViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    vm: RegisterViewModel = viewModel()
+    vm: RegisterViewModel = viewModel(
+        factory = AuthViewModelFactory(LocalContext.current.applicationContext as android.app.Application)
+    )
 ) {
     val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
@@ -76,9 +81,17 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
-                    value = state.username,
-                    onValueChange = vm::onUsernameChange,
-                    label = { Text("Usuario") },
+                    value = state.run,
+                    onValueChange = vm::onRunChange,
+                    label = { Text("RUT (sin puntos, con guion)") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.95f)
+                )
+
+                OutlinedTextField(
+                    value = state.nombre,
+                    onValueChange = vm::onNombreChange,
+                    label = { Text("Nombre completo") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.95f)
                 )
@@ -88,17 +101,47 @@ fun RegisterScreen(
                     onValueChange = vm::onEmailChange,
                     label = { Text("Correo electrónico") },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.95f)
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    placeholder = { Text("usuario@gmail.com o @duoc.cl") }
                 )
 
                 OutlinedTextField(
                     value = state.fechaNacimiento,
                     onValueChange = vm::onFechaNacimientoChange,
-                    label = { Text("Fecha de nacimiento (DD/MM/YYYY)") },
+                    label = { Text("Fecha de nacimiento") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.95f),
-                    placeholder = { Text("Ej: 15/03/1970") }
+                    placeholder = { Text("YYYY-MM-DD") }
                 )
+
+                OutlinedTextField(
+                    value = state.telefono,
+                    onValueChange = vm::onTelefonoChange,
+                    label = { Text("Teléfono") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.95f)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(
+                        value = state.pais,
+                        onValueChange = vm::onPaisChange,
+                        label = { Text("País") },
+                        singleLine = true,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    OutlinedTextField(
+                        value = state.comuna,
+                        onValueChange = vm::onComunaChange,
+                        label = { Text("Comuna") },
+                        singleLine = true,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
 
                 OutlinedTextField(
                     value = state.password,
@@ -159,10 +202,17 @@ fun RegisterScreen(
 
                 Button(
                     onClick = {
-                        vm.submit { username ->
-                            navController.navigate("home/$username") {
-                                popUpTo("register") { inclusive = true }
-                                launchSingleTop = true
+                        vm.submit { correo, isAdmin ->
+                            if (isAdmin) {
+                                navController.navigate("admin/$correo") {
+                                    popUpTo("register") { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            } else {
+                                navController.navigate("home/$correo") {
+                                    popUpTo("register") { inclusive = true }
+                                    launchSingleTop = true
+                                }
                             }
                         }
                     },

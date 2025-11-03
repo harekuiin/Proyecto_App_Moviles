@@ -25,27 +25,40 @@ fun AppNav() {
         }
 
         composable(
-            route = "home/{username}",
+            route = "home/{correo}",
             arguments = listOf(
-                navArgument("username") {
+                navArgument("correo") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val username = backStackEntry.arguments?.getString("username").orEmpty()
-            HomeScreen(username = username, navController = navController)
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            HomeScreen(username = correo, navController = navController)
         }
 
         composable(
-            route = "detalle/{codigo}",
+            route = "detalle/{id}",
             arguments = listOf(
-                navArgument("codigo") {
+                navArgument("id") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val codigo = backStackEntry.arguments?.getString("codigo").orEmpty()
-            DetalleProductoScreen(codigo = codigo, navController = navController)
+            val id = backStackEntry.arguments?.getString("id").orEmpty()
+            DetalleProductoScreen(codigo = id, navController = navController)
+        }
+        
+        composable(
+            route = "admin/{correo}",
+            arguments = listOf(
+                navArgument("correo") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            // Por ahora redirigir a home, se puede crear AdminScreen después
+            HomeScreen(username = correo, navController = navController)
         }
     }
 }

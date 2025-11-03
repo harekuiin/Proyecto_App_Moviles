@@ -5,15 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.proyectologin006d_final.data.dao.ProductoDao
+import com.example.proyectologin006d_final.data.dao.UsuarioDao
 import com.example.proyectologin006d_final.data.model.Producto
+import com.example.proyectologin006d_final.data.model.Usuario
 
 @Database(
-    entities = [Producto::class],
-    version=2,
+    entities = [Producto::class, Usuario::class],
+    version=3,
     exportSchema = false // Agregar para evitar el warning
 )
 abstract class ProductoDatabase: RoomDatabase(){
     abstract fun productoDao(): ProductoDao
+    abstract fun usuarioDao(): UsuarioDao
 
     companion object{
         @Volatile

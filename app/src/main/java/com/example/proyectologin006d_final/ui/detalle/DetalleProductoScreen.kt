@@ -42,7 +42,14 @@ fun DetalleProductoScreen(
     LaunchedEffect(codigo) {
         // Obtener producto desde la lista actual
         val productos = vm.productos.value
-        producto = productos.find { it.codigo == codigo }
+        if (productos.isEmpty()) {
+            // Si no hay productos, esperar un poco y volver a intentar
+            kotlinx.coroutines.delay(500)
+            val productosActualizados = vm.productos.value
+            producto = productosActualizados.find { it.id == codigo }
+        } else {
+            producto = productos.find { it.id == codigo }
+        }
         isLoading = false
     }
 
@@ -175,9 +182,16 @@ fun DetalleProductoScreen(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    // Código del producto
+                    // ID del producto
                     Text(
-                        text = "Código: ${producto!!.codigo}",
+                        text = "ID: ${producto!!.id}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color(0xFF9E9E9E)
+                    )
+                    
+                    // Categoría
+                    Text(
+                        text = "Categoría: ${producto!!.categoria}",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color(0xFF9E9E9E)
                     )
