@@ -140,16 +140,11 @@ val productos: List<Producto> by viewModel.productos.collectAsState()
 
             Button(
                 onClick = {
-                    val producto = Producto(
-                        nombre = nombre,
-                        precio = precio,
-                        cantidad =cantidad.text,
-                        direccion = direccion.text,
-                        conPapas = conPapas,
-                        agrandarBebida =agrandarBebida
-                    )
-                    viewModel.guardarProducto(producto)
-
+                    // Este código está deshabilitado porque usa un modelo antiguo de Producto
+                    // El modelo actual de Producto requiere: id, categoria, nombre, descripcion, precio (Int), stock
+                    // TODO: Actualizar este formulario para usar el nuevo modelo de Producto si se necesita
+                    // Por ahora este formulario está deshabilitado ya que no se usa en la navegación actual
+                    
                     // limpiar formulario despues de guardar
                     cantidad = TextFieldValue("")
                     direccion = TextFieldValue("")
@@ -185,19 +180,19 @@ val productos: List<Producto> by viewModel.productos.collectAsState()
                             Column(modifier =Modifier.padding(8.dp) ){
 
                                 Text(
-                                    text="${producto.nombre} - ${producto.precio} ",
+                                    text="${producto.nombre} - $${producto.precio}",
                                     style = MaterialTheme.typography.bodyLarge
 
                                     ) // fin text1
 
                                 Text(
-                                    text="Cantidad: ${producto.cantidad} ",
+                                    text="Categoría: ${producto.categoria}",
                                     style = MaterialTheme.typography.bodyMedium
 
                                 ) // fin text2
 
                                 Text(
-                                    text="Direccion: ${producto.direccion} ",
+                                    text="Stock: ${producto.stock}",
                                     style = MaterialTheme.typography.bodyMedium
 
                                 ) // fin text3
