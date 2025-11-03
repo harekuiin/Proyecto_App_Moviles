@@ -10,6 +10,8 @@ import com.example.proyectologin006d_final.ui.detalle.DetalleProductoScreen
 import com.example.proyectologin006d_final.ui.home.HomeScreen
 import com.example.proyectologin006d_final.ui.login.LoginScreen
 import com.example.proyectologin006d_final.ui.register.RegisterScreen
+import com.example.proyectologin006d_final.ui.nosotros.NosotrosScreen
+import com.example.proyectologin006d_final.ui.contacto.ContactoScreen
 
 @Composable
 fun AppNav() {
@@ -59,6 +61,30 @@ fun AppNav() {
             val correo = backStackEntry.arguments?.getString("correo").orEmpty()
             // Por ahora redirigir a home, se puede crear AdminScreen después
             HomeScreen(username = correo, navController = navController)
+        }
+
+        composable(
+            route = "nosotros/{correo}",
+            arguments = listOf(
+                navArgument("correo") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            NosotrosScreen(navController = navController, username = correo)
+        }
+
+        composable(
+            route = "contacto/{correo}",
+            arguments = listOf(
+                navArgument("correo") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            ContactoScreen(navController = navController, username = correo)
         }
     }
 }

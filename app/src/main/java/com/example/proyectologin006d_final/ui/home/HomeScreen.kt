@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -65,6 +66,8 @@ fun HomeScreen(
         }
     }
 
+    var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
     MaterialTheme(
         colorScheme = lightColorScheme(
             primary = Chocolate,
@@ -75,30 +78,50 @@ fun HomeScreen(
             onSurface = Color(0xFF5D4037)
         )
     ) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Pastelería Mil Sabores") },
-                    actions = {
-                        IconButton(onClick = {
-                            navController.navigate("login") {
-                                popUpTo(0) { inclusive = true }
-                            }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.ExitToApp,
-                                contentDescription = "Cerrar sesión"
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Chocolate,
-                        titleContentColor = CremaPastel,
-                        actionIconContentColor = CremaPastel
-                    )
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                NavigationDrawerContent(
+                    username = username,
+                    nombreUsuario = nombreUsuario,
+                    navController = navController,
+                    onCloseDrawer = { drawerState.close() }
                 )
             }
-        ) { innerPadding ->
+        ) {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text("Pastelería Mil Sabores") },
+                        navigationIcon = {
+                            IconButton(onClick = { drawerState.open() }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Menú"
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = {
+                                navController.navigate("login") {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.ExitToApp,
+                                    contentDescription = "Cerrar sesión"
+                                )
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Chocolate,
+                            titleContentColor = CremaPastel,
+                            navigationIconContentColor = CremaPastel,
+                            actionIconContentColor = CremaPastel
+                        )
+                    )
+                }
+            ) { innerPadding ->
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -143,6 +166,89 @@ fun HomeScreen(
                 }
             }
         }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NavigationDrawerContent(
+    username: String,
+    nombreUsuario: String,
+    navController: NavController,
+    onCloseDrawer: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(280.dp)
+            .background(CremaPastel)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Pastelería Mil Sabores",
+            style = MaterialTheme.typography.headlineMedium,
+            color = Chocolate,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        
+        Text(
+            text = "Bienvenid@, $nombreUsuario",
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color(0xFF5D4037),
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+        Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+        NavigationDrawerItem(
+            label = { Text("Inicio") },
+            selected = false,
+            onClick = {
+                onCloseDrawer()
+                navController.navigate("home/$username") {
+                    popUpTo("home/$username") { inclusive = true }
+                    launchSingleTop = true
+                }
+            },
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+
+        NavigationDrawerItem(
+            label = { Text("Nosotros") },
+            selected = false,
+            onClick = {
+                onCloseDrawer()
+                navController.navigate("nosotros/$username") {
+                    launchSingleTop = true
+                }
+            },
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+
+        NavigationDrawerItem(
+            label = { Text("Contacto") },
+            selected = false,
+            onClick = {
+                onCloseDrawer()
+                navController.navigate("contacto/$username") {
+                    launchSingleTop = true
+                }
+            },
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+        Text(
+            text = "© 2025 Pastelería Mil Sabores",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color(0xFF9E9E9E),
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
     }
 }
 
