@@ -255,18 +255,6 @@ fun NavigationDrawerContent(
             modifier = Modifier.padding(vertical = 4.dp)
         )
 
-        NavigationDrawerItem(
-            label = { Text("Ver Datos Room") },
-            selected = false,
-            onClick = {
-                onCloseDrawer()
-                navController.navigate("ver_datos/$username") {
-                    launchSingleTop = true
-                }
-            },
-            modifier = Modifier.padding(vertical = 4.dp)
-        )
-
         Spacer(modifier = Modifier.weight(1f))
 
         Divider(modifier = Modifier.padding(vertical = 8.dp))
