@@ -267,4 +267,8 @@ class ProductoViewModel(application: Application) : AndroidViewModel(application
             false
         }
     }
+
+    suspend fun obtenerProductoPorId(id: String): Producto? {
+        return repository.obtenerProductoPorId(id)
+    }
 }

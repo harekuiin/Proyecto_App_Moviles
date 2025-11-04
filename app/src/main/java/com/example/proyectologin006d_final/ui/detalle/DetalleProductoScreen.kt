@@ -73,16 +73,32 @@ fun DetalleProductoScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(codigo) {
-        // Obtener producto desde la lista actual
-        val productos = vm.productos.value
-        if (productos.isEmpty()) {
-            // Si no hay productos, esperar un poco y volver a intentar
-            kotlinx.coroutines.delay(500)
-            val productosActualizados = vm.productos.value
-            producto = productosActualizados.find { it.id == codigo }
-        } else {
-            producto = productos.find { it.id == codigo }
+        isLoading = true
+        
+        // Intentar múltiples estrategias para obtener el producto
+        var productoEncontrado: Producto? = null
+        
+        // Estrategia 1: Buscar en el StateFlow
+        productoEncontrado = vm.productos.value.find { it.id == codigo }
+        
+        // Estrategia 2: Si no está en el StateFlow, obtener directamente del ViewModel
+        if (productoEncontrado == null) {
+            productoEncontrado = vm.obtenerProductoPorId(codigo)
         }
+        
+        // Estrategia 3: Si aún no está, esperar un poco y buscar en el StateFlow nuevamente
+        if (productoEncontrado == null) {
+            kotlinx.coroutines.delay(500)
+            productoEncontrado = vm.productos.value.find { it.id == codigo }
+        }
+        
+        // Estrategia 4: Último intento con más tiempo de espera
+        if (productoEncontrado == null) {
+            kotlinx.coroutines.delay(1000)
+            productoEncontrado = vm.obtenerProductoPorId(codigo)
+        }
+        
+        producto = productoEncontrado
         isLoading = false
     }
 
