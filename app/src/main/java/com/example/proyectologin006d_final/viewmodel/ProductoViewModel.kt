@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyectologin006d_final.data.database.ProductoDatabase
 import com.example.proyectologin006d_final.data.model.Producto
+import com.example.proyectologin006d_final.data.model.ProductoAgregado
+import com.example.proyectologin006d_final.data.repository.ProductoAgregadoRepository
 import com.example.proyectologin006d_final.data.repository.ProductoRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 class ProductoViewModel(application: Application) : AndroidViewModel(application) {
     private val database = ProductoDatabase.getDatabase(application)
     private val repository = ProductoRepository(database.productoDao())
+    private val productoAgregadoRepository = ProductoAgregadoRepository(database.productoAgregadoDao())
 
     val productos: StateFlow<List<Producto>> = repository.obtenerProductos()
         .stateIn(
@@ -250,5 +253,18 @@ class ProductoViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun guardarProducto(producto: Producto) {
         repository.insertarProducto(producto)
+    }
+
+    suspend fun agregarProductoAlCarrito(idProducto: String, correoUsuario: String): Boolean {
+        return try {
+            val productoAgregado = ProductoAgregado(
+                idProducto = idProducto,
+                correoUsuario = correoUsuario
+            )
+            productoAgregadoRepository.insertarProductoAgregado(productoAgregado)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }

@@ -39,15 +39,19 @@ fun AppNav() {
         }
 
         composable(
-            route = "detalle/{id}",
+            route = "detalle/{id}/{correo}",
             arguments = listOf(
                 navArgument("id") {
+                    type = NavType.StringType
+                },
+                navArgument("correo") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id").orEmpty()
-            DetalleProductoScreen(codigo = id, navController = navController)
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            DetalleProductoScreen(codigo = id, correoUsuario = correo, navController = navController)
         }
         
         composable(

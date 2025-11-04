@@ -161,7 +161,7 @@ fun HomeScreen(
                             ProductoCard(
                                 producto = producto,
                                 onClick = {
-                                    navController.navigate("detalle/${producto.id}")
+                                    navController.navigate("detalle/${producto.id}/$username")
                                 }
                             )
                         }
