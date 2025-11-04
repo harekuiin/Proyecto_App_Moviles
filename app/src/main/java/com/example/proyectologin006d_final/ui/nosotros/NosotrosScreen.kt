@@ -22,7 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.navigation.NavController
 import com.example.proyectologin006d_final.data.database.ProductoDatabase
@@ -52,6 +54,7 @@ fun NosotrosScreen(
     }
 
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerScope = rememberCoroutineScope()
 
     MaterialTheme(
         colorScheme = lightColorScheme(
@@ -70,7 +73,7 @@ fun NosotrosScreen(
                     username = username,
                     nombreUsuario = nombreUsuario,
                     navController = navController,
-                    onCloseDrawer = { drawerState.close() }
+                    onCloseDrawer = { drawerScope.launch { drawerState.close() } }
                 )
             }
         ) {
@@ -79,7 +82,7 @@ fun NosotrosScreen(
                     TopAppBar(
                         title = { Text("Nosotros") },
                         navigationIcon = {
-                            IconButton(onClick = { drawerState.open() }) {
+                            IconButton(onClick = { drawerScope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Menú")
                             }
                         },

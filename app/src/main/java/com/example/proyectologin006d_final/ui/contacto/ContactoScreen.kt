@@ -60,8 +60,8 @@ fun ContactoScreen(
     var error by remember { mutableStateOf<String?>(null) }
     var successMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
 
     // Validación de dominio permitido
     fun isAllowedDomain(email: String): Boolean {
@@ -130,7 +130,7 @@ fun ContactoScreen(
                     username = username,
                     nombreUsuario = nombreUsuario,
                     navController = navController,
-                    onCloseDrawer = { drawerState.close() }
+                    onCloseDrawer = { coroutineScope.launch { drawerState.close() } }
                 )
             }
         ) {
@@ -139,7 +139,7 @@ fun ContactoScreen(
                     TopAppBar(
                         title = { Text("Contacto") },
                         navigationIcon = {
-                            IconButton(onClick = { drawerState.open() }) {
+                            IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Menú")
                             }
                         },

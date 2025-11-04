@@ -17,9 +17,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,6 +69,7 @@ fun HomeScreen(
     }
 
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerScope = rememberCoroutineScope()
 
     MaterialTheme(
         colorScheme = lightColorScheme(
@@ -85,7 +88,7 @@ fun HomeScreen(
                     username = username,
                     nombreUsuario = nombreUsuario,
                     navController = navController,
-                    onCloseDrawer = { drawerState.close() }
+                    onCloseDrawer = { drawerScope.launch { drawerState.close() } }
                 )
             }
         ) {
@@ -94,7 +97,7 @@ fun HomeScreen(
                     TopAppBar(
                         title = { Text("Pastelería Mil Sabores") },
                         navigationIcon = {
-                            IconButton(onClick = { drawerState.open() }) {
+                            IconButton(onClick = { drawerScope.launch { drawerState.open() } }) {
                                 Icon(
                                     imageVector = Icons.Default.Menu,
                                     contentDescription = "Menú"
