@@ -290,7 +290,7 @@ fun ProductoCard(
                     val rutaImagen = producto.imagen_principal.removePrefix("/")
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data("file:///android_asset/$rutaImagen")
+                            .data("asset:///$rutaImagen")
                             .crossfade(true)
                             .build(),
                         contentDescription = producto.nombre,

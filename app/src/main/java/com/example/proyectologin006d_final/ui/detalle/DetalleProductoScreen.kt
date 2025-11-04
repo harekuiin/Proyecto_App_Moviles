@@ -26,6 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.layout.ContentScale
 import com.example.proyectologin006d_final.data.model.Producto
 import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
@@ -187,7 +190,7 @@ fun DetalleProductoScreen(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // Espacio para la foto (estructura preparada)
+                    // Imagen del producto
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -196,11 +199,27 @@ fun DetalleProductoScreen(
                             .background(Color(0xFFE0E0E0)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "Foto del producto",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0xFF9E9E9E)
-                        )
+                        if (producto!!.imagen_principal.isNotEmpty()) {
+                            // Convertir ruta "/img/archivo.jpg" a "img/archivo.jpg" para assets
+                            val rutaImagen = producto!!.imagen_principal.removePrefix("/")
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data("asset:///$rutaImagen")
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = producto!!.nombre,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize(),
+                                error = androidx.compose.ui.res.painterResource(android.R.drawable.ic_menu_gallery),
+                                placeholder = androidx.compose.ui.res.painterResource(android.R.drawable.ic_menu_gallery)
+                            )
+                        } else {
+                            Text(
+                                text = "Sin imagen",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color(0xFF9E9E9E)
+                            )
+                        }
                     }
 
                     // Categoría
