@@ -244,6 +244,18 @@ fun NavigationDrawerContent(
         )
 
         NavigationDrawerItem(
+            label = { Text("Escanear QR") },
+            selected = false,
+            onClick = {
+                onCloseDrawer()
+                navController.navigate("qr_scanner/$username") {
+                    launchSingleTop = true
+                }
+            },
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+
+        NavigationDrawerItem(
             label = { Text("Ver Datos Room") },
             selected = false,
             onClick = {

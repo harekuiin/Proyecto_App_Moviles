@@ -13,6 +13,15 @@ import com.example.proyectologin006d_final.ui.register.RegisterScreen
 import com.example.proyectologin006d_final.ui.nosotros.NosotrosScreen
 import com.example.proyectologin006d_final.ui.contacto.ContactoScreen
 import com.example.proyectologin006d_final.ui.admin.VerDatosRoomScreen
+import com.example.proyectologin006d_final.ui.qr.QrScannerScreen
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.proyectologin006d_final.utils.CameraPermissionHelper
 
 @Composable
 fun AppNav() {
@@ -102,6 +111,40 @@ fun AppNav() {
         ) { backStackEntry ->
             val correo = backStackEntry.arguments?.getString("correo").orEmpty()
             VerDatosRoomScreen(navController = navController, username = correo)
+        }
+
+        composable(
+            route = "qr_scanner/{correo}",
+            arguments = listOf(
+                navArgument("correo") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            val context = androidx.compose.ui.platform.LocalContext.current
+            var hasCameraPermission by remember { 
+                mutableStateOf(CameraPermissionHelper.hasCameraPermission(context)) 
+            }
+            
+            val requestPermissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                hasCameraPermission = isGranted
+            }
+            
+            QrScannerScreen(
+                correoUsuario = correo,
+                hasCameraPermission = hasCameraPermission,
+                onRequestPermission = {
+                    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                },
+                onCodigoDescuentoAplicado = { codigo ->
+                    // Cuando se detecta un código de descuento válido, volver a la pantalla anterior
+                    navController.popBackStack()
+                },
+                navController = navController
+            )
         }
     }
 }
