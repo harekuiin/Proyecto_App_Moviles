@@ -16,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,9 +28,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import com.example.proyectologin006d_final.ui.utils.rememberImageFromAssets
 import com.example.proyectologin006d_final.data.model.Producto
 import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
@@ -200,19 +203,27 @@ fun DetalleProductoScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         if (producto!!.imagen_principal.isNotEmpty()) {
-                            // Convertir ruta "/img/archivo.jpg" a "img/archivo.jpg" para assets
-                            val rutaImagen = producto!!.imagen_principal.removePrefix("/")
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data("asset:///$rutaImagen")
-                                    .crossfade(true)
-                                    .build(),
-                                contentDescription = producto!!.nombre,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize(),
-                                error = androidx.compose.ui.res.painterResource(android.R.drawable.ic_menu_gallery),
-                                placeholder = androidx.compose.ui.res.painterResource(android.R.drawable.ic_menu_gallery)
+                            val context = LocalContext.current
+                            val bitmap = rememberImageFromAssets(
+                                context = context,
+                                assetPath = producto!!.imagen_principal,
+                                key = producto!!.id
                             )
+                            
+                            if (bitmap != null) {
+                                Image(
+                                    bitmap = bitmap.asImageBitmap(),
+                                    contentDescription = producto!!.nombre,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            } else {
+                                Text(
+                                    text = "Cargando...",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color(0xFF9E9E9E)
+                                )
+                            }
                         } else {
                             Text(
                                 text = "Sin imagen",

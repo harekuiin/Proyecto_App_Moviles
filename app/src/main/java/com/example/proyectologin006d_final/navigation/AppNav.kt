@@ -12,6 +12,7 @@ import com.example.proyectologin006d_final.ui.login.LoginScreen
 import com.example.proyectologin006d_final.ui.register.RegisterScreen
 import com.example.proyectologin006d_final.ui.nosotros.NosotrosScreen
 import com.example.proyectologin006d_final.ui.contacto.ContactoScreen
+import com.example.proyectologin006d_final.ui.admin.VerDatosRoomScreen
 
 @Composable
 fun AppNav() {
@@ -89,6 +90,18 @@ fun AppNav() {
         ) { backStackEntry ->
             val correo = backStackEntry.arguments?.getString("correo").orEmpty()
             ContactoScreen(navController = navController, username = correo)
+        }
+
+        composable(
+            route = "ver_datos/{correo}",
+            arguments = listOf(
+                navArgument("correo") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            VerDatosRoomScreen(navController = navController, username = correo)
         }
     }
 }

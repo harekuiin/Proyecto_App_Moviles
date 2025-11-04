@@ -14,6 +14,10 @@ class ProductoAgregadoRepository(private val productoAgregadoDao: ProductoAgrega
         return productoAgregadoDao.obtenerProductosAgregadosPorUsuario(correo)
     }
 
+    fun obtenerTodosLosProductosAgregados(): Flow<List<ProductoAgregado>> {
+        return productoAgregadoDao.obtenerTodosLosProductosAgregados()
+    }
+
     suspend fun existeProductoAgregado(idProducto: String, correo: String): Boolean {
         return productoAgregadoDao.existeProductoAgregado(idProducto, correo) != null
     }

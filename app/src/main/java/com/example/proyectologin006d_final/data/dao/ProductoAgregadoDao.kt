@@ -14,6 +14,9 @@ interface ProductoAgregadoDao {
     @Query("SELECT * FROM productos_agregados WHERE correoUsuario = :correo")
     fun obtenerProductosAgregadosPorUsuario(correo: String): Flow<List<ProductoAgregado>>
 
+    @Query("SELECT * FROM productos_agregados")
+    fun obtenerTodosLosProductosAgregados(): Flow<List<ProductoAgregado>>
+
     @Query("SELECT * FROM productos_agregados WHERE idProducto = :idProducto AND correoUsuario = :correo")
     suspend fun existeProductoAgregado(idProducto: String, correo: String): ProductoAgregado?
 }
