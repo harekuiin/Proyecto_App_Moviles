@@ -23,8 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.rememberCoroutineScope
-import android.content.Intent
-import android.net.Uri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -262,88 +260,6 @@ fun NosotrosScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color(0xFF5D4037)
                         )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Botones de Google Maps
-                Text(
-                    text = "Encuéntranos",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Chocolate,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                Text(
-                    text = "Pasaje Cabo West 1583, Puente Alto, Santiago, Chile",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFF5D4037),
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Botón: Ver ruta desde tu ubicación
-                    Button(
-                        onClick = {
-                            // URI de direcciones de Google Maps desde la ubicación actual hasta el local
-                            val gmmIntentUri = Uri.parse(
-                                "https://www.google.com/maps/dir/?api=1" +
-                                        "&destination=Pasaje+Cabo+West+1583,+Puente+Alto,+Santiago,+Chile" +
-                                        "&travelmode=driving"
-                            )
-                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                                setPackage("com.google.android.apps.maps")
-                            }
-                            // Si no está instalada la app de Google Maps, abrimos en el navegador
-                            if (mapIntent.resolveActivity(context.packageManager) != null) {
-                                context.startActivity(mapIntent)
-                            } else {
-                                val browserIntent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    gmmIntentUri
-                                )
-                                context.startActivity(browserIntent)
-                            }
-                        },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text("Ver ruta desde mi ubicación")
-                    }
-
-                    // Botón: Ver solo la ubicación del local
-                    OutlinedButton(
-                        onClick = {
-                            // URI de ubicación del local
-                            val gmmIntentUri = Uri.parse(
-                                "geo:0,0?q=Pasaje+Cabo+West+1583,+Puente+Alto,+Santiago,+Chile"
-                            )
-                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                                setPackage("com.google.android.apps.maps")
-                            }
-                            if (mapIntent.resolveActivity(context.packageManager) != null) {
-                                context.startActivity(mapIntent)
-                            } else {
-                                // Fallback a navegador con la ubicación
-                                val browserIntent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(
-                                        "https://www.google.com/maps/search/?api=1&query=Pasaje+Cabo+West+1583,+Puente+Alto,+Santiago,+Chile"
-                                    )
-                                )
-                                context.startActivity(browserIntent)
-                            }
-                        },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text("Ver ubicación del local")
                     }
                 }
 
