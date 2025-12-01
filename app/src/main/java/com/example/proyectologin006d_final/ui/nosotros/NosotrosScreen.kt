@@ -1,5 +1,7 @@
 package com.example.proyectologin006d_final.ui.nosotros
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -19,19 +21,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import androidx.navigation.NavController
 import com.example.proyectologin006d_final.data.database.ProductoDatabase
 import com.example.proyectologin006d_final.data.repository.UsuarioRepository
 import com.example.proyectologin006d_final.ui.home.NavigationDrawerContent
 import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.rememberCoroutineScope
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -258,8 +260,33 @@ fun NosotrosScreen(
                         Text(
                             text = "Ser reconocidos como la pastelería líder en la región, siendo el destino preferido para quienes buscan calidad, sabor y experiencia en cada bocado. Aspiramos a ser parte de los momentos más importantes de las familias de nuestra comunidad.",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0xFF5D4037)
+                            color = Color(0xFF5D4037),
+                            modifier = Modifier.padding(bottom = 16.dp)
                         )
+
+                        // Botones de ubicación
+                        val address = "Pasaje Cabo West 1583, Puente Alto, Santiago, Chile"
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Button(
+                                onClick = { openDirectionsFromCurrentLocation(context, address) },
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                Text(text = "Cómo llegar")
+                            }
+                            OutlinedButton(
+                                onClick = { openLocationOnly(context, address) },
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                Text(text = "Ver ubicación")
+                            }
+                        }
                     }
                 }
 
@@ -268,5 +295,19 @@ fun NosotrosScreen(
         }
         }
     }
+}
+
+private fun openDirectionsFromCurrentLocation(context: android.content.Context, address: String) {
+    val encodedAddress = Uri.encode(address)
+    val uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$encodedAddress")
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    context.startActivity(intent)
+}
+
+private fun openLocationOnly(context: android.content.Context, address: String) {
+    val encodedAddress = Uri.encode(address)
+    val uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$encodedAddress")
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    context.startActivity(intent)
 }
 
