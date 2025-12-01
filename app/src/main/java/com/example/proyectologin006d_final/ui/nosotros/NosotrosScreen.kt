@@ -31,15 +31,12 @@ import com.example.proyectologin006d_final.data.repository.UsuarioRepository
 import com.example.proyectologin006d_final.ui.home.NavigationDrawerContent
 import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import androidx.compose.ui.viewinterop.AndroidView
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker as OsmMarker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -300,25 +297,16 @@ fun NosotrosScreen(
 
 @Composable
 fun LocalMapView(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    
     // Coordenadas del local: 33°34'30.6"S 70°36'01.1"W
     // Convertido a decimal: -33.5752, -70.6003
-    val localLocation = LatLng(-33.5752, -70.6003)
+    val localLocation = GeoPoint(-33.5752, -70.6003)
     
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(localLocation, 15f)
-    }
-    
-    val uiSettings = remember { 
-        MapUiSettings(
-            zoomControlsEnabled = true,
-            myLocationButtonEnabled = false
-        )
-    }
-    
-    val properties = remember {
-        MapProperties(
-            mapType = MapType.NORMAL
-        )
+    // Configurar osmdroid
+    LaunchedEffect(Unit) {
+        Configuration.getInstance().load(context, context.getSharedPreferences("osmdroid", android.content.Context.MODE_PRIVATE))
+        Configuration.getInstance().userAgentValue = context.packageName
     }
     
     Card(
@@ -328,18 +316,27 @@ fun LocalMapView(modifier: Modifier = Modifier) {
             containerColor = Color.White
         )
     ) {
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState,
-            uiSettings = uiSettings,
-            properties = properties
-        ) {
-            Marker(
-                state = MarkerState(position = localLocation),
-                title = "Mil Sabores",
-                snippet = "Pasaje Cabo West 1583, Puente Alto"
-            )
-        }
+        AndroidView(
+            factory = { ctx ->
+                MapView(ctx).apply {
+                    setTileSource(TileSourceFactory.MAPNIK)
+                    setMultiTouchControls(true)
+                    
+                    // Configurar la posición inicial del mapa
+                    controller.setZoom(15.0)
+                    controller.setCenter(localLocation)
+                    
+                    // Agregar marcador en la ubicación del local
+                    val marker = OsmMarker(this)
+                    marker.position = localLocation
+                    marker.setAnchor(OsmMarker.ANCHOR_CENTER, OsmMarker.ANCHOR_BOTTOM)
+                    marker.title = "Mil Sabores"
+                    marker.snippet = "Pasaje Cabo West 1583, Puente Alto"
+                    overlays.add(marker)
+                }
+            },
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
