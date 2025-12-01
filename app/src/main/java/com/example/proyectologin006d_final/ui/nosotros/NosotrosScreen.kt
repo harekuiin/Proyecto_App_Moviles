@@ -34,6 +34,9 @@ import com.example.proyectologin006d_final.ui.theme.CremaPastel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -297,11 +300,25 @@ fun NosotrosScreen(
 
 @Composable
 fun LocalMapView(modifier: Modifier = Modifier) {
-    // Coordenadas del local: Pasaje Cabo West 1583, Puente Alto, Santiago, Chile
-    val localLocation = LatLng(-33.6114, -70.5756)
+    // Coordenadas del local: 33°34'30.6"S 70°36'01.1"W
+    // Convertido a decimal: -33.5752, -70.6003
+    val localLocation = LatLng(-33.5752, -70.6003)
     
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(localLocation, 15f)
+    }
+    
+    val uiSettings = remember { 
+        MapUiSettings(
+            zoomControlsEnabled = true,
+            myLocationButtonEnabled = false
+        )
+    }
+    
+    val properties = remember {
+        MapProperties(
+            mapType = MapType.NORMAL
+        )
     }
     
     Card(
@@ -313,7 +330,9 @@ fun LocalMapView(modifier: Modifier = Modifier) {
     ) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            uiSettings = uiSettings,
+            properties = properties
         ) {
             Marker(
                 state = MarkerState(position = localLocation),
