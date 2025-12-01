@@ -31,6 +31,12 @@ import com.example.proyectologin006d_final.data.repository.UsuarioRepository
 import com.example.proyectologin006d_final.ui.home.NavigationDrawerContent
 import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -273,29 +279,12 @@ fun NosotrosScreen(
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
 
-                        // Botones de ubicación
-                        val address = "Pasaje Cabo West 1583, Puente Alto, Santiago, Chile"
-                        Row(
+                        // Mapa embebido con la ubicación del local
+                        LocalMapView(
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = { openDirectionsFromCurrentLocation(context, address) },
-                                modifier = Modifier
-                                    .weight(1f)
-                            ) {
-                                Text(text = "Cómo llegar")
-                            }
-                            OutlinedButton(
-                                onClick = { openLocationOnly(context, address) },
-                                modifier = Modifier
-                                    .weight(1f)
-                            ) {
-                                Text(text = "Ver ubicación")
-                            }
-                        }
+                                .fillMaxWidth()
+                                .height(300.dp)
+                        )
                     }
                 }
 
@@ -306,17 +295,32 @@ fun NosotrosScreen(
     }
 }
 
-private fun openDirectionsFromCurrentLocation(context: android.content.Context, address: String) {
-    val encodedAddress = Uri.encode(address)
-    val uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$encodedAddress")
-    val intent = Intent(Intent.ACTION_VIEW, uri)
-    context.startActivity(intent)
-}
-
-private fun openLocationOnly(context: android.content.Context, address: String) {
-    val encodedAddress = Uri.encode(address)
-    val uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$encodedAddress")
-    val intent = Intent(Intent.ACTION_VIEW, uri)
-    context.startActivity(intent)
+@Composable
+fun LocalMapView(modifier: Modifier = Modifier) {
+    // Coordenadas del local: Pasaje Cabo West 1583, Puente Alto, Santiago, Chile
+    val localLocation = LatLng(-33.6114, -70.5756)
+    
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(localLocation, 15f)
+    }
+    
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
+    ) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState
+        ) {
+            Marker(
+                state = MarkerState(position = localLocation),
+                title = "Mil Sabores",
+                snippet = "Pasaje Cabo West 1583, Puente Alto"
+            )
+        }
+    }
 }
 
