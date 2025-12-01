@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +33,6 @@ import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.ui.theme.CremaPastel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rememberCoroutineScope
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
