@@ -264,6 +264,15 @@ fun NosotrosScreen(
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
 
+                        // Subtítulo para ubicación
+                        Text(
+                            text = "¿No sabes donde encontrarnos?",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Chocolate,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+
                         // Botones de ubicación
                         val address = "Pasaje Cabo West 1583, Puente Alto, Santiago, Chile"
                         Row(
