@@ -299,7 +299,7 @@ fun NosotrosScreen(
 fun LocalMapView(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     
-    // Coordenadas del local: 33°34'30.6"S 70°36'01.1"W
+    // Coordenadas locales: 33°34'30.6"S 70°36'01.1"W
     // Convertido a decimal: -33.5752, -70.6003
     val localLocation = GeoPoint(-33.5752, -70.6003)
     

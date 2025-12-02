@@ -63,7 +63,7 @@ dependencies {
     // Dependencia para la navegación con Jetpack Compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
-// Íconos (core opcional) y EXTENDIDOS (¡este es el clave!)
+// Íconos y EXTENDIDOS
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
 
@@ -86,7 +86,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$camerax_version")
     implementation("androidx.camera:camera-view:$camerax_version")
 
-    // ZXing para leer QR (opcional, pero incluido en el proyecto original)
+    // ZXing para leer QR
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
@@ -101,6 +101,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
