@@ -1,24 +1,28 @@
 package com.example.proyectologin006d_final.data.repository
 
 import com.example.proyectologin006d_final.data.model.Usuario
+import io.mockk.coEvery
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.runs
+import io.mockk.MockKAnnotations
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.*
 
-/**
- * Pruebas unitarias para el cálculo de descuentos basados en edad
- */
 class DescuentoCalculoTest {
 
+    @MockK
     private lateinit var usuarioRepository: UsuarioRepository
+
+    @InjectMockKs
     private lateinit var authRepository: AuthRepository
 
     @Before
     fun setup() {
-        usuarioRepository = mock()
-        authRepository = AuthRepository(usuarioRepository)
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -27,8 +31,8 @@ class DescuentoCalculoTest {
         val correo = "usuario@gmail.com"
         val fechaNacimiento = "1970-05-15" // Formato YYYY-MM-DD
         
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
-        whenever(usuarioRepository.insertarUsuario(any())).thenAnswer { }
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
+        coEvery { usuarioRepository.insertarUsuario(any()) } just runs
 
         val usuario = Usuario(
             correo = correo,
@@ -55,8 +59,8 @@ class DescuentoCalculoTest {
         val correo = "usuario@gmail.com"
         val fechaNacimiento = "2000-05-15"
         
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
-        whenever(usuarioRepository.insertarUsuario(any())).thenAnswer { }
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
+        coEvery { usuarioRepository.insertarUsuario(any()) } just runs
 
         val usuario = Usuario(
             correo = correo,
@@ -83,8 +87,8 @@ class DescuentoCalculoTest {
         val correo = "usuario@gmail.com"
         val fechaNacimiento = "15/05/1970" // Formato DD/MM/YYYY
         
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
-        whenever(usuarioRepository.insertarUsuario(any())).thenAnswer { }
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
+        coEvery { usuarioRepository.insertarUsuario(any()) } just runs
 
         val usuario = Usuario(
             correo = correo,
@@ -110,8 +114,8 @@ class DescuentoCalculoTest {
         // Given: Usuario sin fecha de nacimiento
         val correo = "usuario@gmail.com"
         
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
-        whenever(usuarioRepository.insertarUsuario(any())).thenAnswer { }
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
+        coEvery { usuarioRepository.insertarUsuario(any()) } just runs
 
         val usuario = Usuario(
             correo = correo,
@@ -137,8 +141,8 @@ class DescuentoCalculoTest {
         // Given: Usuario con código de descuento
         val correo = "usuario@gmail.com"
         
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
-        whenever(usuarioRepository.insertarUsuario(any())).thenAnswer { }
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
+        coEvery { usuarioRepository.insertarUsuario(any()) } just runs
 
         val usuario = Usuario(
             correo = correo,
@@ -160,4 +164,3 @@ class DescuentoCalculoTest {
         assertEquals(10, successResult.usuario.descuento)
     }
 }
-

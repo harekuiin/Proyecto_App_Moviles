@@ -26,4 +26,3 @@ class UsuarioRepository(private val usuarioDao: UsuarioDao) {
         return usuarioDao.obtenerAdmins()
     }
 }
-

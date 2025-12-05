@@ -1,30 +1,26 @@
 package com.example.proyectologin006d_final.ui.register
 
-import com.example.proyectologin006d_final.data.model.Usuario
 import com.example.proyectologin006d_final.data.repository.AuthRepository
-import com.example.proyectologin006d_final.data.repository.RegisterResult
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.MockKAnnotations
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.junit.Ignore
-import org.mockito.kotlin.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RegisterViewModelTest {
 
+    @MockK
     private lateinit var authRepository: AuthRepository
+
+    @InjectMockKs
     private lateinit var viewModel: RegisterViewModel
-    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
-        authRepository = mock()
-        viewModel = RegisterViewModel(authRepository)
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -121,4 +117,3 @@ class RegisterViewModelTest {
     }
 
 }
-

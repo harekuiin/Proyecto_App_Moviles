@@ -1,21 +1,29 @@
 package com.example.proyectologin006d_final.data.repository
 
 import com.example.proyectologin006d_final.data.model.Usuario
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.runs
+import io.mockk.MockKAnnotations
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.*
 
 class AuthRepositoryTest {
 
+    @MockK
     private lateinit var usuarioRepository: UsuarioRepository
+
+    @InjectMockKs
     private lateinit var authRepository: AuthRepository
 
     @Before
     fun setup() {
-        usuarioRepository = mock()
-        authRepository = AuthRepository(usuarioRepository)
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -57,7 +65,7 @@ class AuthRepositoryTest {
     fun `test login - usuario no encontrado`() = runBlocking {
         // Given
         val correo = "usuario@gmail.com"
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
 
         // When
         val result = authRepository.login(correo, "password123")
@@ -78,7 +86,7 @@ class AuthRepositoryTest {
             password = "password123",
             isAdmin = false
         )
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(usuario)
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns usuario
 
         // When
         val result = authRepository.login(correo, "passwordIncorrecta")
@@ -100,7 +108,7 @@ class AuthRepositoryTest {
             password = password,
             isAdmin = false
         )
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(usuario)
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns usuario
 
         // When
         val result = authRepository.login(correo, password)
@@ -124,7 +132,7 @@ class AuthRepositoryTest {
             password = password,
             isAdmin = false
         )
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(usuario)
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns usuario
 
         // When
         val result = authRepository.login(correo, password)
@@ -146,7 +154,7 @@ class AuthRepositoryTest {
             password = "password123",
             isAdmin = false
         )
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(usuarioExistente)
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns usuarioExistente
 
         val nuevoUsuario = Usuario(
             correo = correo,
@@ -168,7 +176,7 @@ class AuthRepositoryTest {
     fun `test register - contraseña muy corta`() = runBlocking {
         // Given
         val correo = "nuevo@gmail.com"
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
 
         val nuevoUsuario = Usuario(
             correo = correo,
@@ -190,8 +198,8 @@ class AuthRepositoryTest {
     fun `test register - registro exitoso estudiante duoc`() = runBlocking {
         // Given
         val correo = "estudiante@duoc.cl"
-        whenever(usuarioRepository.obtenerUsuarioPorCorreo(correo)).thenReturn(null)
-        whenever(usuarioRepository.insertarUsuario(any())).thenAnswer { }
+        coEvery { usuarioRepository.obtenerUsuarioPorCorreo(correo) } returns null
+        coEvery { usuarioRepository.insertarUsuario(any()) } just runs
 
         val nuevoUsuario = Usuario(
             correo = correo,
@@ -209,7 +217,6 @@ class AuthRepositoryTest {
         val successResult = result as RegisterResult.Success
         assertTrue(successResult.esEstudianteDuoc)
         assertTrue(successResult.usuario.tortaGratis)
-        verify(usuarioRepository).insertarUsuario(any())
+        coVerify { usuarioRepository.insertarUsuario(any()) }
     }
 }
-
