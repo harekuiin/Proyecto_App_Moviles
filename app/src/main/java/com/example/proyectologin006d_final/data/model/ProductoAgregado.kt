@@ -10,6 +10,7 @@ data class ProductoAgregado(
     val id: Long = 0,
     val idProducto: String, // ID del producto (ej: TC001)
     val correoUsuario: String, // Correo del usuario que agregó el producto
-    val fechaAgregado: Long = System.currentTimeMillis() // Timestamp de cuando se agregó
+    val fechaAgregado: Long = System.currentTimeMillis(), // Timestamp de cuando se agregó
+    val comentario: String = "" // Comentario opcional del usuario
 )
 

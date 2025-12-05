@@ -13,7 +13,7 @@ import com.example.proyectologin006d_final.data.model.Usuario
 
 @Database(
     entities = [Producto::class, Usuario::class, ProductoAgregado::class],
-    version=4,
+    version = 5, // Incrementado para agregar campo comentario en ProductoAgregado
     exportSchema = false // Agregar para evitar el warning
 )
 abstract class ProductoDatabase: RoomDatabase(){

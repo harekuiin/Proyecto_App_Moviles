@@ -255,11 +255,12 @@ class ProductoViewModel(application: Application) : AndroidViewModel(application
         repository.insertarProducto(producto)
     }
 
-    suspend fun agregarProductoAlCarrito(idProducto: String, correoUsuario: String): Boolean {
+    suspend fun agregarProductoAlCarrito(idProducto: String, correoUsuario: String, comentario: String = ""): Boolean {
         return try {
             val productoAgregado = ProductoAgregado(
                 idProducto = idProducto,
-                correoUsuario = correoUsuario
+                correoUsuario = correoUsuario,
+                comentario = comentario
             )
             productoAgregadoRepository.insertarProductoAgregado(productoAgregado)
             true

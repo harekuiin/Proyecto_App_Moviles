@@ -76,6 +76,7 @@ fun DetalleProductoScreen(
     var isLoading by remember { mutableStateOf(true) }
     var mensajeConfirmacion by remember { mutableStateOf<String?>(null) }
     var isAgregando by remember { mutableStateOf(false) }
+    var comentario by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(codigo) {
@@ -115,11 +116,12 @@ fun DetalleProductoScreen(
         mensajeConfirmacion = null
         
         coroutineScope.launch {
-            val exito = vm.agregarProductoAlCarrito(producto!!.id, correoUsuario)
+            val exito = vm.agregarProductoAlCarrito(producto!!.id, correoUsuario, comentario)
             isAgregando = false
             
             if (exito) {
                 mensajeConfirmacion = "¡Producto agregado exitosamente al carrito!"
+                comentario = "" // Limpiar el comentario después de agregar
                 // Ocultar el mensaje después de 3 segundos
                 kotlinx.coroutines.delay(3000)
                 mensajeConfirmacion = null
@@ -345,6 +347,26 @@ fun DetalleProductoScreen(
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Campo de comentario opcional
+                    OutlinedTextField(
+                        value = comentario,
+                        onValueChange = { comentario = it },
+                        label = { Text("Comentario (opcional)") },
+                        placeholder = { Text("Ej: Sin nueces, mensaje especial, etc.") },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Chocolate,
+                            unfocusedBorderColor = Color(0xFFB0BEC5),
+                            focusedLabelColor = Chocolate,
+                            cursorColor = Chocolate
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        maxLines = 3,
+                        minLines = 2
+                    )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
