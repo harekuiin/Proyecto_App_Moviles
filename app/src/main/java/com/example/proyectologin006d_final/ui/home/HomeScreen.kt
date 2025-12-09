@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -106,6 +107,16 @@ fun HomeScreen(
                             }
                         },
                         actions = {
+                            IconButton(onClick = {
+                                navController.navigate("carrito/$username") {
+                                    launchSingleTop = true
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = "Carrito"
+                                )
+                            }
                             IconButton(onClick = {
                                 navController.navigate("login") {
                                     popUpTo(0) { inclusive = true }
@@ -249,6 +260,18 @@ fun NavigationDrawerContent(
             onClick = {
                 onCloseDrawer()
                 navController.navigate("qr_scanner/$username") {
+                    launchSingleTop = true
+                }
+            },
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+
+        NavigationDrawerItem(
+            label = { Text("Mi Carrito") },
+            selected = false,
+            onClick = {
+                onCloseDrawer()
+                navController.navigate("carrito/$username") {
                     launchSingleTop = true
                 }
             },

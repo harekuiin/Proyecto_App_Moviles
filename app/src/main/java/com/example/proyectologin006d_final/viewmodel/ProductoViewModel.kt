@@ -257,12 +257,21 @@ class ProductoViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun agregarProductoAlCarrito(idProducto: String, correoUsuario: String, comentario: String = ""): Boolean {
         return try {
-            val productoAgregado = ProductoAgregado(
-                idProducto = idProducto,
-                correoUsuario = correoUsuario,
-                comentario = comentario
-            )
-            productoAgregadoRepository.insertarProductoAgregado(productoAgregado)
+            // Verificar si el producto ya existe en el carrito
+            val existente = productoAgregadoRepository.existeProductoAgregado(idProducto, correoUsuario)
+            if (existente != null) {
+                // Si existe, incrementar la cantidad
+                productoAgregadoRepository.actualizarCantidad(existente.id, existente.cantidad + 1)
+            } else {
+                // Si no existe, crear nuevo registro
+                val productoAgregado = ProductoAgregado(
+                    idProducto = idProducto,
+                    correoUsuario = correoUsuario,
+                    comentario = comentario,
+                    cantidad = 1
+                )
+                productoAgregadoRepository.insertarProductoAgregado(productoAgregado)
+            }
             true
         } catch (e: Exception) {
             false
@@ -271,5 +280,52 @@ class ProductoViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun obtenerProductoPorId(id: String): Producto? {
         return repository.obtenerProductoPorId(id)
+    }
+
+    // ==================== FUNCIONES DEL CARRITO ====================
+
+    fun obtenerCarritoPorUsuario(correo: String) = productoAgregadoRepository.obtenerProductosAgregadosPorUsuario(correo)
+
+    suspend fun incrementarCantidad(id: Long) {
+        try {
+            val item = productoAgregadoRepository.obtenerProductoAgregadoPorId(id)
+            if (item != null) {
+                productoAgregadoRepository.actualizarCantidad(id, item.cantidad + 1)
+            }
+        } catch (e: Exception) {
+            // Manejar error silenciosamente
+        }
+    }
+
+    suspend fun decrementarCantidad(id: Long) {
+        try {
+            val item = productoAgregadoRepository.obtenerProductoAgregadoPorId(id)
+            if (item != null) {
+                if (item.cantidad > 1) {
+                    productoAgregadoRepository.actualizarCantidad(id, item.cantidad - 1)
+                } else {
+                    // Si la cantidad es 1 y se decrementa, eliminar el producto
+                    productoAgregadoRepository.eliminarProductoAgregadoPorId(id)
+                }
+            }
+        } catch (e: Exception) {
+            // Manejar error silenciosamente
+        }
+    }
+
+    suspend fun eliminarDelCarrito(id: Long) {
+        try {
+            productoAgregadoRepository.eliminarProductoAgregadoPorId(id)
+        } catch (e: Exception) {
+            // Manejar error silenciosamente
+        }
+    }
+
+    suspend fun vaciarCarrito(correo: String) {
+        try {
+            productoAgregadoRepository.vaciarCarrito(correo)
+        } catch (e: Exception) {
+            // Manejar error silenciosamente
+        }
     }
 }

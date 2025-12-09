@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.proyectologin006d_final.ui.carrito.CarritoScreen
 import com.example.proyectologin006d_final.ui.detalle.DetalleProductoScreen
 import com.example.proyectologin006d_final.ui.home.HomeScreen
 import com.example.proyectologin006d_final.ui.login.LoginScreen
@@ -145,6 +146,18 @@ fun AppNav() {
                 },
                 navController = navController
             )
+        }
+
+        composable(
+            route = "carrito/{correo}",
+            arguments = listOf(
+                navArgument("correo") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val correo = backStackEntry.arguments?.getString("correo").orEmpty()
+            CarritoScreen(correoUsuario = correo, navController = navController)
         }
     }
 }

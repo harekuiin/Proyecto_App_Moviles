@@ -10,6 +10,14 @@ class ProductoAgregadoRepository(private val productoAgregadoDao: ProductoAgrega
         productoAgregadoDao.insertarProductoAgregado(productoAgregado)
     }
 
+    suspend fun actualizarProductoAgregado(productoAgregado: ProductoAgregado) {
+        productoAgregadoDao.actualizarProductoAgregado(productoAgregado)
+    }
+
+    suspend fun eliminarProductoAgregado(productoAgregado: ProductoAgregado) {
+        productoAgregadoDao.eliminarProductoAgregado(productoAgregado)
+    }
+
     fun obtenerProductosAgregadosPorUsuario(correo: String): Flow<List<ProductoAgregado>> {
         return productoAgregadoDao.obtenerProductosAgregadosPorUsuario(correo)
     }
@@ -18,8 +26,24 @@ class ProductoAgregadoRepository(private val productoAgregadoDao: ProductoAgrega
         return productoAgregadoDao.obtenerTodosLosProductosAgregados()
     }
 
-    suspend fun existeProductoAgregado(idProducto: String, correo: String): Boolean {
-        return productoAgregadoDao.existeProductoAgregado(idProducto, correo) != null
+    suspend fun existeProductoAgregado(idProducto: String, correo: String): ProductoAgregado? {
+        return productoAgregadoDao.existeProductoAgregado(idProducto, correo)
+    }
+
+    suspend fun obtenerProductoAgregadoPorId(id: Long): ProductoAgregado? {
+        return productoAgregadoDao.obtenerProductoAgregadoPorId(id)
+    }
+
+    suspend fun eliminarProductoAgregadoPorId(id: Long) {
+        productoAgregadoDao.eliminarProductoAgregadoPorId(id)
+    }
+
+    suspend fun actualizarCantidad(id: Long, cantidad: Int) {
+        productoAgregadoDao.actualizarCantidad(id, cantidad)
+    }
+
+    suspend fun vaciarCarrito(correo: String) {
+        productoAgregadoDao.vaciarCarrito(correo)
     }
 }
 
