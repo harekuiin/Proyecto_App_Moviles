@@ -26,10 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import com.example.proyectologin006d_final.ui.theme.Chocolate
-import com.example.proyectologin006d_final.ui.theme.CremaPastel
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -55,21 +51,7 @@ fun LoginScreen(
     val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
 
-
-    MaterialTheme(
-        colorScheme = lightColorScheme(
-            primary = Chocolate,
-            background = CremaPastel,
-            surface = CremaPastel,
-            onPrimary = CremaPastel,
-            onBackground = Color(0xFF5D4037),
-            onSurface = Color(0xFF5D4037)
-        )
-    ){ // inicio Aplicar Material
-
-
-
-        Scaffold (
+    Scaffold (
             // Crea Estuctra basica de la pantalla Se define topBar, BottomBar
             topBar = {
                 TopAppBar(
@@ -95,7 +77,7 @@ fun LoginScreen(
                     // Evita que quede oculto
                     .fillMaxSize() // Hace que la columnna tome el todo el tamaño
                     .padding(16.dp)
-                    .background(CremaPastel),
+                    .background(MaterialTheme.colorScheme.background),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally  // Centra horizontalmente
                 //Define  que elementos dentro la columna estaran separados por 20.dp
@@ -201,8 +183,5 @@ fun LoginScreen(
             }// fin Contenido
 
         } // Fin inner
-
-
-    } // fin Aplicar Material
-}// Fin HomeScreen
+}// Fin LoginScreen
 

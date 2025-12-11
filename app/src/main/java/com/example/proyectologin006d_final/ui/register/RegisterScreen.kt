@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.proyectologin006d_final.ui.theme.CremaPastel
-import com.example.proyectologin006d_final.ui.theme.Chocolate
 import com.example.proyectologin006d_final.viewmodel.AuthViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,23 +33,13 @@ fun RegisterScreen(
     var showPass by remember { mutableStateOf(false) }
     var showConfirmPass by remember { mutableStateOf(false) }
 
-    MaterialTheme(
-        colorScheme = lightColorScheme(
-            primary = Chocolate,
-            background = CremaPastel,
-            surface = CremaPastel,
-            onPrimary = CremaPastel,
-            onBackground = Color(0xFF5D4037),
-            onSurface = Color(0xFF5D4037)
-        )
-    ) {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Pastelería Mil Sabores") },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Chocolate,
-                        titleContentColor = CremaPastel
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
             }
@@ -61,7 +49,7 @@ fun RegisterScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
                     .padding(16.dp)
-                    .background(CremaPastel),
+                    .background(MaterialTheme.colorScheme.background),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -124,7 +112,7 @@ fun RegisterScreen(
                     Text(
                         text = "Confirmo que soy mayor de 18 años",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF5D4037),
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
@@ -166,10 +154,7 @@ fun RegisterScreen(
                         }
                     },
                     enabled = !state.isLoading,
-                    modifier = Modifier.fillMaxWidth(0.6f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Chocolate
-                    )
+                    modifier = Modifier.fillMaxWidth(0.6f)
                 ) {
                     Text(if (state.isLoading) "Registrando..." else "Registrarse")
                 }
@@ -181,6 +166,5 @@ fun RegisterScreen(
                 }
             }
         }
-    }
 }
 
