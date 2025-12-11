@@ -39,9 +39,9 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun ProyectoLogin006D_finalTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false, // Forzar tema claro por defecto
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false, // Deshabilitado para evitar problemas de pantalla negra
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

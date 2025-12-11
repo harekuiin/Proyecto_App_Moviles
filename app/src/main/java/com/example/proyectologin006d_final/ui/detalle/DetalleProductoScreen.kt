@@ -6,7 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -150,7 +150,7 @@ fun DetalleProductoScreen(
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Volver"
                             )
                         }
@@ -251,7 +251,7 @@ fun DetalleProductoScreen(
                         fontWeight = FontWeight.Bold
                     )
 
-                    Divider(color = Color(0xFFE0E0E0))
+                    HorizontalDivider(color = Color(0xFFE0E0E0))
 
                     // Precio
                     Text(
@@ -261,7 +261,7 @@ fun DetalleProductoScreen(
                         fontWeight = FontWeight.Bold
                     )
 
-                    Divider(color = Color(0xFFE0E0E0))
+                    HorizontalDivider(color = Color(0xFFE0E0E0))
 
                     // Descripción breve inventada
                     Text(
@@ -278,7 +278,7 @@ fun DetalleProductoScreen(
                         lineHeight = androidx.compose.ui.unit.TextUnit(24f, androidx.compose.ui.unit.TextUnitType.Sp)
                     )
 
-                    Divider(color = Color(0xFFE0E0E0))
+                    HorizontalDivider(color = Color(0xFFE0E0E0))
 
                     // Descripción original
                     Text(

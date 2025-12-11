@@ -6,7 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
@@ -149,7 +149,7 @@ fun ContactoScreen(
                                     popUpTo(0) { inclusive = true }
                                 }
                             }) {
-                                Icon(Icons.Default.ExitToApp, contentDescription = "Cerrar sesión")
+                                Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Cerrar sesión")
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
