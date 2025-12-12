@@ -17,6 +17,7 @@ data class Usuario(
     val descuento: Int = 0,
     val tortaGratis: Boolean = false,
     val codigoUsado: String = "",
-    val isAdmin: Boolean = false // Determina si es admin basado en @profesor.duoc.cl
+    val isAdmin: Boolean = false, // Determina si es admin basado en @profesor.duoc.cl
+    val comentario: String = "" // Comentario opcional del usuario
 )
 

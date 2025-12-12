@@ -23,11 +23,15 @@ class LoginViewModel(
         uiState = uiState.copy(password = value, error = null)
     }
 
+    fun onComentarioChange(value: String) {
+        uiState = uiState.copy(comentario = value)
+    }
+
     fun submit(onSuccess: (String, Boolean) -> Unit) {
         uiState = uiState.copy(isLoading = true, error = null)
         
         viewModelScope.launch {
-            val result = repo.login(uiState.correo.trim(), uiState.password)
+            val result = repo.login(uiState.correo.trim(), uiState.password, uiState.comentario)
             uiState = uiState.copy(isLoading = false)
             
             when (result) {

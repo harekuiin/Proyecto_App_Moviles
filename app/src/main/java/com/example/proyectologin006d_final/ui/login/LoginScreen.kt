@@ -137,6 +137,15 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(0.95f)
                 ) // fin passw
 
+                OutlinedTextField(
+                    value = state.comentario,
+                    onValueChange = vm::onComentarioChange,
+                    label = { Text("Comentario (opcional)") },
+                    placeholder = { Text("Ej: Sin nueces, mensaje especial, etc.") },
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    maxLines = 3,
+                    minLines = 2
+                ) // fin comentario
 
                 if (state.error != null) {
                     Spacer(Modifier.height(8.dp))

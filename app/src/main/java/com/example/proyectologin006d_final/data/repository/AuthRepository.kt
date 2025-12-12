@@ -26,7 +26,7 @@ class AuthRepository(
         return email.lowercase().endsWith(DOMAIN_PROFESOR)
     }
     
-    suspend fun login(correo: String, password: String): LoginResult {
+    suspend fun login(correo: String, password: String, comentario: String = ""): LoginResult {
         if (!isAllowedDomain(correo)) {
             return LoginResult.Error("El correo debe ser @gmail.com, @duoc.cl o @profesor.duoc.cl")
         }
@@ -43,7 +43,11 @@ class AuthRepository(
         // Determinar si es admin basado en el dominio
         val isAdmin = isProfessorDomain(correo) || usuario.isAdmin
         
-        return LoginResult.Success(usuario.copy(isAdmin = isAdmin))
+        // Guardar el comentario en el usuario
+        val usuarioActualizado = usuario.copy(isAdmin = isAdmin, comentario = comentario)
+        usuarioRepository.actualizarUsuario(usuarioActualizado)
+        
+        return LoginResult.Success(usuarioActualizado)
     }
     
     suspend fun register(usuario: Usuario): RegisterResult {
