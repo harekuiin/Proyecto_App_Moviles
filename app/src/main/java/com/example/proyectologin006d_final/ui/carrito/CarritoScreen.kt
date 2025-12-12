@@ -56,6 +56,8 @@ fun CarritoScreen(
     val productos by vm.productos.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var mostrarDialogoVaciar by remember { mutableStateOf(false) }
+    var mostrarMensajeExito by remember { mutableStateOf(false) }
+    var procesandoPago by remember { mutableStateOf(false) }
 
     // Combinar productos agregados con información del producto
     val itemsCarrito = remember(productosAgregados, productos) {
@@ -253,20 +255,73 @@ fun CarritoScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
+                            // Mensaje de éxito
+                            if (mostrarMensajeExito) {
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 16.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = Color(0xFF4CAF50) // Verde
+                                    ),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Text(
+                                        text = "✓ Pago realizado con éxito",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxWidth(),
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
+
                             Button(
-                                onClick = { /* TODO: Implementar proceso de compra */ },
+                                onClick = {
+                                    procesandoPago = true
+                                    coroutineScope.launch {
+                                        // Simular proceso de pago
+                                        kotlinx.coroutines.delay(1000)
+                                        // Mostrar mensaje de éxito
+                                        mostrarMensajeExito = true
+                                        // Esperar un momento para que el usuario vea el mensaje
+                                        kotlinx.coroutines.delay(2000)
+                                        // Vaciar el carrito
+                                        vm.vaciarCarrito(correoUsuario)
+                                        procesandoPago = false
+                                        mostrarMensajeExito = false
+                                    }
+                                },
+                                enabled = !procesandoPago && !mostrarMensajeExito,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(56.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = Chocolate),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
-                                Text(
-                                    text = "Proceder al pago",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = CremaPastel
-                                )
+                                if (procesandoPago) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(24.dp),
+                                        color = CremaPastel
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "Procesando...",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = CremaPastel
+                                    )
+                                } else {
+                                    Text(
+                                        text = "Proceder al pago",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = CremaPastel
+                                    )
+                                }
                             }
                         }
                     }
