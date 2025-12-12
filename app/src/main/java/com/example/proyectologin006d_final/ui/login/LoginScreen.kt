@@ -81,8 +81,8 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally  // Centra horizontalmente
                 //Define  que elementos dentro la columna estaran separados por 20.dp
-            )// fin column
-            {// inicio Contenido
+            ) {
+            // inicio Contenido
                 Text(text="Pastelería Mil Sabores",
                     style= MaterialTheme.typography.headlineLarge,
                     color=MaterialTheme.colorScheme.primary,
@@ -184,4 +184,3 @@ fun LoginScreen(
 
         } // Fin inner
 }// Fin LoginScreen
-
